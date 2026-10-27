@@ -1,0 +1,24 @@
+---
+layout: default
+---
+{% assign category = site.data.categories | where: 'slug', page.category | first %}
+{% assign category_posts = site.categories[page.category] %}
+<header class="archive-header">
+  <a class="back-link" href="{{ '/#categories' | relative_url }}">모든 카테고리</a>
+  <h1>{{ category.name | escape }}</h1>
+  <p>{{ category.description | escape }}</p>
+</header>
+<div class="archive-columns">
+  <nav class="subject-index category-navigation" aria-label="카테고리 선택">
+    <ul class="subject-list">
+      {% for item in site.data.categories %}
+        <li><a href="{{ '/categories/' | append: item.slug | append: '/' | relative_url }}"{% if item.slug == page.category %} aria-current="page"{% endif %}><span>{{ item.name | escape }}</span><span class="subject-count" aria-label="{{ site.categories[item.slug] | size }}개의 글">{{ site.categories[item.slug] | size }}</span></a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+  <section class="writing-index" aria-labelledby="posts-title">
+    <div class="section-heading"><h2 id="posts-title">글 목록</h2><span>{{ category_posts | size }}개의 글</span></div>
+    {% if category_posts.size > 0 %}{% include post-search.html %}{% endif %}
+    {% include post-list.html posts=category_posts %}
+  </section>
+</div>

@@ -1,0 +1,66 @@
+---
+layout: default
+---
+<section class="masthead" aria-labelledby="site-heading">
+  <h1 id="site-heading">{{ site.title | escape }}</h1>
+  <div class="masthead-intro">
+    <p>개발과 보안 공부를 기록하는 블로그.<br>직접 만든 것과 풀어본 문제를 정리합니다.</p>
+    <a class="primary-link" href="#posts">전체 글 읽기 <span aria-hidden="true">↗</span></a>
+  </div>
+</section>
+{% assign profile = site.data.profile %}
+<section id="about" class="profile-panel" aria-labelledby="profile-heading">
+  <div class="profile-panel-head">
+    <div class="profile-panel-lead">
+      <h2 id="profile-heading">{{ profile.name | default: '윤도현' | escape }}</h2>
+      <p class="profile-bio">{{ profile.bio | escape }}</p>
+    </div>
+    <nav class="profile-links" aria-label="외부 채널">
+      {% for link in profile.links %}
+        <a class="profile-link-tile" href="{{ link.url }}" target="_blank" rel="noopener">
+          <span class="profile-link-name">{{ link.name | escape }}</span>
+          <span class="profile-link-meta">{{ link.handle | default: link.url | replace: 'https://', '' | replace: 'http://', '' | replace: 'www.', '' | escape }} <span aria-hidden="true">↗</span></span>
+        </a>
+      {% endfor %}
+    </nav>
+  </div>
+  {% if profile.career.size > 0 %}
+    <div class="profile-career-block">
+      <h3 class="profile-career-heading">경력 및 활동</h3>
+      <dl class="profile-career">
+        {% for job in profile.career %}
+          <div class="profile-career-row">
+            <dt class="career-period">{{ job.period | escape }}</dt>
+            <dd class="career-role">{{ job.title | escape }}</dd>
+            <dd class="career-place">{{ job.place | escape }}</dd>
+          </div>
+        {% endfor %}
+      </dl>
+    </div>
+  {% endif %}
+</section>
+<div class="archive-columns">
+  <section id="categories" class="subject-index" aria-labelledby="categories-title">
+    <h2 id="categories-title">카테고리</h2>
+    <nav aria-label="카테고리">
+      <ul class="subject-list">
+        {% for category in site.data.categories %}
+          <li>
+            <a href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}">
+              <span>{{ category.name | escape }}</span>
+              <span class="subject-count" aria-label="{{ site.categories[category.slug] | size }}개의 글">{{ site.categories[category.slug] | size }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </section>
+  <section id="posts" class="writing-index" aria-labelledby="posts-title">
+    <div class="section-heading">
+      <h2 id="posts-title">전체 글</h2>
+      <span>{{ site.posts | size }}개의 글</span>
+    </div>
+    {% include post-search.html %}
+    {% include post-list.html posts=site.posts %}
+  </section>
+</div>

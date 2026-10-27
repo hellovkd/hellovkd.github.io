@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+  {% include head.html %}
+  <body{% if page.layout == 'home' %} class="home-page"{% endif %}>
+    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+    <header class="study-header study-shell">
+      <a class="study-brand" href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
+      <nav aria-label="주 메뉴">
+        <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>홈</a>
+        <a href="{{ '/#categories' | relative_url }}">카테고리</a>
+        <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+      </nav>
+    </header>
+    <main id="main" class="study-shell" tabindex="-1">{{ content }}</main>
+    <footer class="study-footer">
+      <p class="study-shell">개발과 보안 공부 기록.</p>
+    </footer>
+    <script src="{{ '/assets/study.js' | relative_url }}" defer></script>
+  </body>
+</html>

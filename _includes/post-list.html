@@ -1,0 +1,18 @@
+<div id="post-results" class="study-post-list">
+  {% for post in include.posts %}
+    <article class="study-post-row" data-post-title="{{ post.title | escape }}">
+      <div class="post-meta">
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y.%m.%d' }}</time>
+        {% for slug in post.categories %}
+          {% assign category = site.data.categories | where: 'slug', slug | first %}
+          {% if category %}<a href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}">{{ category.name | escape }}</a>{% endif %}
+        {% endfor %}
+      </div>
+      <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
+      <p>{{ post.excerpt | strip_html | truncate: 150 | escape }}</p>
+    </article>
+  {% else %}
+    <div class="empty-state"><p>아직 작성한 글이 없습니다.</p><a href="{{ '/#posts' | relative_url }}">전체 글 보기</a></div>
+  {% endfor %}
+</div>
+<div class="search-empty" hidden><p>검색 결과가 없습니다.</p><p>다른 제목으로 검색해 보세요.</p></div>

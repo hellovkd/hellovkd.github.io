@@ -1,0 +1,18 @@
+- slug: development
+  name: 개발
+  description: 프로젝트를 만들며 배운 내용과 구현 과정.
+- slug: ctf-wargame
+  name: CTF/Wargame
+  description: CTF와 워게임 문제 풀이, 사용한 기법 정리.
+- slug: bug-bounty
+  name: Bug Bounty
+  description: 취약점을 찾고 분석한 과정과 리서치 기록.
+- slug: blog-docs
+  name: 블로그/기술문서
+  description: 공부하며 참고한 기술 문서와 정리한 내용.
+- slug: papers-conferences
+  name: 논문/컨퍼런스
+  description: 읽은 논문과 컨퍼런스 발표를 정리한 노트.
+- slug: contests-certifications
+  name: 공모전/자격증
+  description: 공모전 참여와 자격증 준비 과정.
