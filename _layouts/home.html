@@ -45,10 +45,13 @@ layout: default
     <nav aria-label="카테고리">
       <ul class="subject-list">
         {% for category in site.data.categories %}
+          {% assign cat_post_count = site.categories[category.slug] | size %}
+          {% assign cat_project_count = site.data.projects | where: 'category', category.slug | size %}
+          {% assign cat_total = cat_post_count | plus: cat_project_count %}
           <li>
             <a href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}">
               <span>{{ category.name | escape }}</span>
-              <span class="subject-count" aria-label="{{ site.categories[category.slug] | size }}개의 글">{{ site.categories[category.slug] | size }}</span>
+              <span class="subject-count" aria-label="{{ cat_total }}개의 항목">{{ cat_total }}</span>
             </a>
           </li>
         {% endfor %}

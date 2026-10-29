@@ -1,0 +1,29 @@
+- category: development
+  type: 개인 페이지
+  period: "2026"
+  title: My Portfolio AI
+  subtitle: 정보보호 전공 AI 포트폴리오
+  description: 정보보호학 전공 학생의 개인 포트폴리오 웹 애플리케이션입니다. 대화형 인터페이스를 통해 전공 학습 기록과 프로젝트를 소개합니다.
+  stack:
+    - Next.js
+    - TypeScript
+    - Vercel
+  demo_url: https://my-userapp.vercel.app/
+  demo_handle: my-userapp.vercel.app
+  repo_url: https://github.com/hellovkd/JBU-WebPrograming-my-page
+  repo_handle: JBU-WebPrograming-my-page
+
+- category: development
+  type: 팀 프로젝트
+  period: "2026"
+  title: 탄단지 계산기
+  subtitle: 맞춤형 하루 칼로리 및 탄단지 기록 서비스
+  description: 성별, 나이, 키, 체중과 활동량을 바탕으로 나에게 맞는 하루 권장 칼로리와 탄수화물·단백질·지방 비율을 계산하고 식단을 기록하는 웹 서비스입니다.
+  stack:
+    - Next.js
+    - TypeScript
+    - Vercel
+  demo_url: https://team-project-eight-snowy.vercel.app/
+  demo_handle: team-project-eight-snowy.vercel.app
+  repo_url: https://github.com/hellovkd/JBU-Web-programing-team-project
+  repo_handle: JBU-Web-programing-team-project
