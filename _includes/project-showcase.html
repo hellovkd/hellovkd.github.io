@@ -30,14 +30,6 @@
           </figure>
         {% endif %}
       </div>
-      <details class="project-details">
-        <summary><span>구현 내용 및 주요 경로</span><span class="disclosure-sign" aria-hidden="true"></span></summary>
-        <div class="project-detail-body">
-          {% if project.highlights.size > 0 %}<ul class="project-highlights">{% for item in project.highlights %}<li>{{ item | escape }}</li>{% endfor %}</ul>{% endif %}
-          {% if project.routes.size > 0 %}<div class="project-routes"><span>주요 경로</span>{% for route in project.routes %}<code>{{ route | escape }}</code>{% endfor %}</div>{% endif %}
-          {% if project.repo_handle %}<a class="project-repository" href="{{ project.repo_url }}" target="_blank" rel="noopener"><code>{{ project.repo_handle | escape }}</code> ↗</a>{% endif %}
-        </div>
-      </details>
     </article>
   {% endfor %}
 </div>

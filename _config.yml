@@ -18,6 +18,7 @@ exclude:
   - .taste-skill/
   - .design
   - .mcp/
+  - .playwright-mcp/
   - gemfiles/
   - Gemfile
   - Gemfile.lock

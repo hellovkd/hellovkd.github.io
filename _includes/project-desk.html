@@ -51,32 +51,6 @@
                 {% endfor %}
               </ul>
             {% endif %}
-            <details class="workbench-notes" data-slot="collapsible">
-              <summary>
-                <span>구현 내용 및 주요 경로</span>
-                <span class="disclosure-sign" aria-hidden="true"></span>
-              </summary>
-              <div class="workbench-note-content">
-                {% if project.highlights.size > 0 %}
-                  <ul class="workbench-highlights">
-                    {% for item in project.highlights %}
-                      <li>{{ item | escape }}</li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-                <div class="workbench-routes">
-                  <p>주요 경로 및 저장소</p>
-                  <div class="workbench-route-list">
-                    {% for route in project.routes %}
-                      <code>{{ route | escape }}</code>
-                    {% endfor %}
-                  </div>
-                  {% if project.repo_handle %}
-                    <a class="workbench-repo-path" href="{{ project.repo_url }}" target="_blank" rel="noopener"><code>{{ project.repo_handle | escape }}</code> ↗</a>
-                  {% endif %}
-                </div>
-              </div>
-            </details>
           </div>
         </article>
       {% endfor %}

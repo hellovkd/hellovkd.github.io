@@ -8,3 +8,4 @@ vendor
 .design
 .design/
 .mcp/
+.playwright-mcp/
