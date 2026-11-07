@@ -2,7 +2,7 @@
   {% for post in include.posts %}
     <article class="study-post-row" data-post-title="{{ post.title | escape }}">
       <div class="post-meta">
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y.%m.%d' }}</time>
+        <time datetime="{{ post.date | date_to_xmlschema }}">게시 {{ post.date | date: '%Y.%m.%d %H:%M' }} (KST)</time>
         {% for slug in post.categories %}
           {% assign category = site.data.categories | where: 'slug', slug | first %}
           {% if category %}<a href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}">{{ category.name | escape }}</a>{% endif %}

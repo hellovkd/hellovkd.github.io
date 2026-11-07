@@ -23,6 +23,7 @@ email: soojooo123@naver.com
 description: >-
   개발과 보안을 공부하며 만난 문제, 발견, 그리고 도전을 기록합니다.
 lang: ko
+timezone: Asia/Seoul
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  hellovkd

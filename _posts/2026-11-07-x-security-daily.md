@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "X 보안 이슈 매일 정리하기"
-date: 2026-11-07 00:00:00 +0000
+date: 2026-11-07 11:39:25 +0900
 categories: [blog-docs]
 tags: [기록, 노트, 보안]
 permalink: /blog-docs/x-security-daily/

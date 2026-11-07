@@ -11,7 +11,7 @@ layout: default
       {% endfor %}
     </div>
     <h1>{{ page.title | escape }}</h1>
-    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y.%m.%d' }}</time>
+    <time datetime="{{ page.date | date_to_xmlschema }}">게시 {{ page.date | date: '%Y.%m.%d %H:%M' }} (KST)</time>
   </header>
   <div class="article-content">{{ content }}</div>
 </article>
