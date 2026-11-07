@@ -3,7 +3,7 @@ layout: post
 title: "X 보안 이슈 매일 정리하기"
 date: 2026-11-07 11:39:25 +0900
 categories: [blog-docs]
-tags: [기록, 노트, 보안]
+tags: [기록, 보안이슈]
 permalink: /blog-docs/x-security-daily/
 excerpt: "11/07 — OpenAI의 GPT-6 Cyber 보안 연구 소식 정리."
 ---

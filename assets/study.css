@@ -130,7 +130,6 @@ details[open] > summary .disclosure-sign::before { content: "−"; }
 .study-post-row h3 a { display: inline-flex; align-items: baseline; gap: 10px; transition: color 160ms ease-out; }
 .post-row-arrow { font-size: 18px; color: var(--muted); transition: transform 170ms ease-out, color 170ms ease-out; }
 .study-post-row h3 a:hover .post-row-arrow { color: var(--accent); transform: translate(1.5px, -1.5px); }
-.post-excerpt { margin-top: 10px; font-size: 16px; line-height: 1.8; max-width: 62ch; color: var(--ink); }
 .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 12px; font-size: 14px; color: var(--muted); }
 .post-meta-cat { font-weight: 600; color: var(--ink); min-height: 32px; display: inline-flex; align-items: center; }
 .post-meta-tags { display: inline-flex; flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: 14px; }
