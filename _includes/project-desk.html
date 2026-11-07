@@ -1,0 +1,48 @@
+<section class="project-desk" aria-labelledby="desk-title" data-project-desk>
+  <div class="desk-heading">
+    <h2 id="desk-title">만든 것들</h2>
+    <p>하나씩 열어보세요.</p>
+  </div>
+  <div class="folder-tabs" role="tablist" aria-label="프로젝트 선택" hidden>
+    {% for project in site.data.projects %}
+      {% assign visual = site.data.project_visuals | where: 'repo', project.repo_handle | first %}
+      <button type="button" class="folder-tab" role="tab" id="project-tab-{{ forloop.index }}" aria-controls="project-panel-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}">
+        <span>{{ visual.tab | default: project.title | escape }}</span><span class="folder-tab-arrow" aria-hidden="true">↗</span>
+      </button>
+    {% endfor %}
+  </div>
+  {% for project in site.data.projects %}
+    {% assign visual = site.data.project_visuals | where: 'repo', project.repo_handle | first %}
+    <article class="folder-panel" id="project-panel-{{ forloop.index }}" data-folder-panel>
+      <div class="folder-content">
+        <div class="folder-copy">
+          <h3>{{ project.title | escape }}</h3>
+          <p class="folder-type">{{ project.type | escape }} · {{ project.period | escape }}</p>
+          <p class="folder-description">{{ project.description | escape }}</p>
+          <ul class="folder-stack" aria-label="사용 기술">{% for tech in project.stack %}<li>{{ tech | escape }}</li>{% endfor %}</ul>
+          <div class="folder-links">
+            <a class="folder-open" href="{{ project.demo_url }}" target="_blank" rel="noopener">사이트 열기 <span aria-hidden="true">↗</span></a>
+            {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank" rel="noopener">GitHub ↗</a>{% endif %}
+          </div>
+        </div>
+        {% if visual.image %}
+
+          <figure class="folder-preview">
+            <a href="{{ project.demo_url }}" target="_blank" rel="noopener" aria-label="{{ project.title | escape }} 사이트 열기">
+              <img src="{{ visual.image | relative_url }}" width="1280" height="900" alt="{{ project.title | escape }}의 실제 첫 화면"{% unless forloop.first %} loading="lazy"{% endunless %}>
+              <span class="preview-visit" aria-hidden="true">직접 둘러보기 ↗</span>
+            </a>
+            <figcaption>{{ visual.caption | escape }}<span>공개 사이트 화면</span></figcaption>
+          </figure>
+        {% endif %}
+      </div>
+      <details class="folder-notes">
+        <summary>어떻게 만들었나요?<span class="disclosure-sign" aria-hidden="true"></span></summary>
+        <div class="folder-note-content">
+          <ul>{% for item in project.highlights %}<li>{{ item | escape }}</li>{% endfor %}</ul>
+          <div class="folder-routes"><p>주요 경로</p>{% for route in project.routes %}<code>{{ route | escape }}</code>{% endfor %}</div>
+        </div>
+      </details>
+    </article>
+  {% endfor %}
+</section>

@@ -2,28 +2,77 @@
   type: 개인 페이지
   period: "2026"
   title: My Portfolio AI
-  subtitle: 정보보호 전공 AI 포트폴리오
-  description: 정보보호학 전공 학생의 개인 포트폴리오 웹 애플리케이션입니다. 대화형 인터페이스를 통해 전공 학습 기록과 프로젝트를 소개합니다.
+  subtitle: 정보보호 전공 대화형 AI 포트폴리오
+  description: 정보보호학 전공 학습 기록과 프로젝트를 프롬프트 대화형 인터페이스로 탐색할 수 있는 개인 포트폴리오 웹 애플리케이션입니다.
+  status: "VERCEL // LIVE"
+  routes:
+    - "/ (AI Chat Prompt)"
+    - "/login"
+    - "/projects"
+  highlights:
+    - "프롬프트 기반 대화형 UI로 전공 학습 이력·보안 관심사 실시간 질의응답"
+    - "사용자 인증(/login) 및 MongoDB 연동 세션·대화 데이터 관리"
+    - "Next.js App Router & TypeScript 기반 반응형 인터페이스"
   stack:
     - Next.js
+    - React
+    - MongoDB
     - TypeScript
     - Vercel
   demo_url: https://my-userapp.vercel.app/
   demo_handle: my-userapp.vercel.app
   repo_url: https://github.com/hellovkd/JBU-WebPrograming-my-page
-  repo_handle: JBU-WebPrograming-my-page
+  repo_handle: hellovkd/JBU-WebPrograming-my-page
 
 - category: development
   type: 팀 프로젝트
   period: "2026"
   title: 탄단지 계산기
-  subtitle: 맞춤형 하루 칼로리 및 탄단지 기록 서비스
-  description: 성별, 나이, 키, 체중과 활동량을 바탕으로 나에게 맞는 하루 권장 칼로리와 탄수화물·단백질·지방 비율을 계산하고 식단을 기록하는 웹 서비스입니다.
+  subtitle: 맞춤형 하루 권장 칼로리 및 탄단지 식단 기록 서비스
+  description: 성별·나이·신장·체중과 활동량을 바탕으로 개인별 권장 칼로리와 탄수화물·단백질·지방(탄단지) 비율을 자동 계산하고 일일 식단을 기록하는 웹 서비스입니다.
+  status: "VERCEL // LIVE"
+  routes:
+    - "/dashboard (칼로리 달성률 대시보드)"
+    - "/meals (식단 기록 페이지)"
+    - "/foods (음식 영양 정보 검색)"
+    - "/login (로그인)"
+  highlights:
+    - "기초대사량·활동량 기반 일일 목표 kcal 및 탄·단·지 그램(g) 비율 자동 산출"
+    - "아침·점심·저녁·간식 식단 기록(/meals) 및 음식 영양 성분 데이터베이스(/foods) 탐색"
+    - "대시보드(/dashboard)를 통한 일일 섭취량 달성률 시각화"
   stack:
     - Next.js
+    - React
+    - MongoDB
     - TypeScript
     - Vercel
   demo_url: https://team-project-eight-snowy.vercel.app/
   demo_handle: team-project-eight-snowy.vercel.app
   repo_url: https://github.com/hellovkd/JBU-Web-programing-team-project
-  repo_handle: JBU-Web-programing-team-project
+  repo_handle: hellovkd/JBU-Web-programing-team-project
+
+- category: development
+  type: 개인 페이지
+  period: "2026"
+  title: Github.io를 활용한 나만의 블로그
+  subtitle: jekyll 기반 학습 기록 사이트
+  description: 학습 기록과 내가 한 프로젝트를 정리하는 개인 블로그.
+  status: "Github // LIVE"
+  routes:
+    - "/ (홈 / 메인 아카이브)"
+    - "/categories/development (개발 프로젝트 모음)"
+    - "/posts (전체 글 목록)"
+  highlights:
+    - "Jekyll + GitHub Pages로 배포하는 정적 사이트"
+    - "라이트/다크 테마 토글과 비대칭 에디토리얼 레이아웃"
+    - "카테고리별 글 아카이브와 제목 검색"
+  stack:
+    - Jekyll
+    - Liquid
+    - HTML/CSS
+    - JavaScript
+    - GitHub Pages
+  demo_url: https://hellovkd.github.io/
+  demo_handle: hellovkd.github.io
+  repo_url: https://github.com/hellovkd/hellovkd.github.io
+  repo_handle: hellovkd/hellovkd.github.io

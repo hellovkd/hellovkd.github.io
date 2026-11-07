@@ -1,6 +1,7 @@
 <div id="post-results" class="study-post-list">
   {% for post in include.posts %}
-    <article class="study-post-row" data-post-title="{{ post.title | escape }}">
+
+    <article class="study-post-row" data-post-title="{{ post.title | escape }}" data-post-categories="{{ post.categories | join: ' ' | escape }}">
       <div class="post-meta">
         <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y.%m.%d' }}</time>
         {% for slug in post.categories %}

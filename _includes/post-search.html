@@ -1,7 +1,12 @@
 <div class="post-search" hidden>
   <label for="post-query">글 제목 검색</label>
   <div class="search-control">
-    <input id="post-query" type="search" placeholder="찾고 싶은 글 제목" autocomplete="off" aria-controls="post-results">
+    <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <input id="post-query" type="search" placeholder="글 제목 검색..." autocomplete="off" aria-controls="post-results">
+    <kbd class="search-kbd" aria-hidden="true">/</kbd>
     <button type="button" class="search-reset" hidden>지우기</button>
   </div>
   <p class="search-status" role="status" aria-live="polite"></p>

@@ -1,69 +1,50 @@
 ---
 layout: default
 ---
-<section class="masthead" aria-labelledby="site-heading">
-  <h1 id="site-heading">{{ site.title | escape }}</h1>
-  <div class="masthead-intro">
-    <p>개발과 보안 공부를 기록하는 블로그.<br>직접 만든 것과 풀어본 문제를 정리합니다.</p>
-    <a class="primary-link" href="#posts">전체 글 읽기 <span aria-hidden="true">↗</span></a>
-  </div>
-</section>
 {% assign profile = site.data.profile %}
-<section id="about" class="profile-panel" aria-labelledby="profile-heading">
-  <div class="profile-panel-head">
-    <div class="profile-panel-lead">
-      <h2 id="profile-heading">{{ profile.name | default: '윤도현' | escape }}</h2>
-      <p class="profile-bio">{{ profile.bio | escape }}</p>
+
+<div class="desk-home">
+  <section class="desk-intro" aria-labelledby="site-heading">
+    <h1 id="site-heading"><span>일단,</span> <span>공부합니다.</span></h1>
+    <div class="desk-intro-copy">
+      <p>{{ profile.bio | escape }}</p>
+      <div class="desk-author">
+        <span>{{ profile.name | escape }}</span>
+        {% include social-links.html %}
+        <a class="desk-read" href="#posts">기록 읽기 <span aria-hidden="true">↓</span></a>
+      </div>
     </div>
-    <nav class="profile-links" aria-label="외부 채널">
-      {% for link in profile.links %}
-        <a class="profile-link-tile" href="{{ link.url }}" target="_blank" rel="noopener">
-          <span class="profile-link-name">{{ link.name | escape }}</span>
-          <span class="profile-link-meta">{{ link.handle | default: link.url | replace: 'https://', '' | replace: 'http://', '' | replace: 'www.', '' | escape }} <span aria-hidden="true">↗</span></span>
-        </a>
-      {% endfor %}
-    </nav>
-  </div>
-  {% if profile.career.size > 0 %}
-    <div class="profile-career-block">
-      <h3 class="profile-career-heading">경력 및 활동</h3>
-      <dl class="profile-career">
-        {% for job in profile.career %}
-          <div class="profile-career-row">
-            <dt class="career-period">{{ job.period | escape }}</dt>
-            <dd class="career-role">{{ job.title | escape }}</dd>
-            <dd class="career-place">{{ job.place | escape }}</dd>
-          </div>
-        {% endfor %}
-      </dl>
-    </div>
-  {% endif %}
-</section>
-<div class="archive-columns">
-  <section id="categories" class="subject-index" aria-labelledby="categories-title">
-    <h2 id="categories-title">카테고리</h2>
-    <nav aria-label="카테고리">
-      <ul class="subject-list">
+  </section>
+  {% include project-desk.html %}
+  <section id="posts" class="desk-archive" aria-labelledby="posts-title">
+    <div class="archive-index">
+      <h2 id="posts-title">기록.</h2>
+      <p>배운 것, 풀어본 것, 생각한 것.</p>
+
+      <nav class="archive-filters" aria-label="기록 분야 선택" data-archive-filters>
+        <a class="archive-filter" href="{{ '/#posts' | relative_url }}" data-category="" aria-current="true"><span>전체 기록</span><span>{{ site.posts | size }}</span></a>
         {% for category in site.data.categories %}
-          {% assign cat_post_count = site.categories[category.slug] | size %}
-          {% assign cat_project_count = site.data.projects | where: 'category', category.slug | size %}
-          {% assign cat_total = cat_post_count | plus: cat_project_count %}
-          <li>
-            <a href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}">
-              <span>{{ category.name | escape }}</span>
-              <span class="subject-count" aria-label="{{ cat_total }}개의 항목">{{ cat_total }}</span>
-            </a>
-          </li>
+          <a class="archive-filter" href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}" data-category="{{ category.slug }}"><span>{{ category.name | escape }}</span><span>{{ site.categories[category.slug] | size }}</span></a>
         {% endfor %}
-      </ul>
-    </nav>
-  </section>
-  <section id="posts" class="writing-index" aria-labelledby="posts-title">
-    <div class="section-heading">
-      <h2 id="posts-title">전체 글</h2>
-      <span>{{ site.posts | size }}개의 글</span>
+      </nav>
     </div>
-    {% include post-search.html %}
-    {% include post-list.html posts=site.posts %}
+    <div class="archive-reading">
+      {% include post-search.html %}
+      {% include post-list.html posts=site.posts %}
+      <div class="archive-empty" data-category-empty hidden>
+        <h3>아직 펼치지 않은 기록</h3>
+        <p>이 분야의 글은 아직 없습니다.</p>
+        <a href="{{ '/categories/development/' | relative_url }}" data-category-destination>카테고리 둘러보기 ↗</a>
+      </div>
+    </div>
   </section>
+  <aside class="desk-contact" aria-label="연락처">
+    <p>기록 밖의 이야기도 좋아합니다.</p>
+    {% if site.email %}
+      <div class="profile-contact">
+        <a href="mailto:{{ site.email | escape }}">{{ site.email | escape }}</a>
+        <button type="button" class="copy-email-btn" data-copy-email="{{ site.email | escape }}" aria-label="이메일 주소 복사"><span class="copy-email-badge" role="status">복사</span></button>
+      </div>
+    {% endif %}
+  </aside>
 </div>

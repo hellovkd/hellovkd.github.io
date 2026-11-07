@@ -1,0 +1,12 @@
+- repo: hellovkd/JBU-WebPrograming-my-page
+  tab: 포트폴리오
+  image: /assets/projects/portfolio.jpg
+  caption: 질문으로 나를 소개하는 포트폴리오
+- repo: hellovkd/JBU-Web-programing-team-project
+  tab: 탄단지 계산기
+  image: /assets/projects/nutrition.jpg
+  caption: 신체 정보에서 시작하는 식단 관리
+- repo: hellovkd/hellovkd.github.io
+  tab: 공부 블로그
+  image: /assets/projects/study.jpg
+  caption: 직접 만들고 고쳐 가는 공부 기록

@@ -1,62 +1,45 @@
 ---
 layout: default
 ---
+
 {% assign category = site.data.categories | where: 'slug', page.category | first %}
 {% assign category_posts = site.categories[page.category] %}
 {% assign category_projects = site.data.projects | where: 'category', page.category %}
-<header class="archive-header">
-  <h1>{{ category.name | escape }}</h1>
-  <div class="masthead-intro">
-    <p>{{ category.description | escape }}</p>
-    <a class="back-link" href="{{ '/#categories' | relative_url }}">모든 카테고리 <span aria-hidden="true">↗</span></a>
+<header class="hero-editorial category-hero">
+  <div class="hero-meta-col">
+    <h1>{{ category.name | escape }}</h1>
+  </div>
+  <div class="hero-statement-col">
+    <p class="hero-subtext">{{ category.description | escape }}</p>
   </div>
 </header>
-<div class="archive-columns">
-  <nav class="subject-index category-navigation" aria-label="카테고리 선택">
-    <ul class="subject-list">
-      {% for item in site.data.categories %}
-        {% assign item_post_count = site.categories[item.slug] | size %}
-        {% assign item_project_count = site.data.projects | where: 'category', item.slug | size %}
-        {% assign item_total = item_post_count | plus: item_project_count %}
-        <li><a href="{{ '/categories/' | append: item.slug | append: '/' | relative_url }}"{% if item.slug == page.category %} aria-current="page"{% endif %}><span>{{ item.name | escape }}</span><span class="subject-count" aria-label="{{ item_total }}개의 항목">{{ item_total }}</span></a></li>
-      {% endfor %}
-    </ul>
-  </nav>
-  <section class="writing-index" aria-labelledby="posts-title">
+<div class="layout">
+  <aside class="sidebar">
+    {% include category-nav.html current=page.category %}
+  </aside>
+  <div class="content">
     {% if category_projects.size > 0 %}
-      <div class="project-showcase">
-        <div class="section-heading"><h2 id="posts-title">프로젝트 쇼케이스</h2><span>{{ category_projects | size }}개의 프로젝트</span></div>
-        <div class="project-list">
-          {% for project in category_projects %}
-            <article class="project-card">
-              <div class="project-card-lead">
-                <h3>{{ project.title | escape }}</h3>
-                <p class="project-subtitle">{{ project.type | escape }}{% if project.subtitle %} · {{ project.subtitle | escape }}{% endif %}{% if project.stack.size > 0 %} · {{ project.stack | join: ' · ' | escape }}{% endif %}</p>
-                <p class="project-description">{{ project.description | escape }}</p>
-              </div>
-              <div class="project-links">
-                {% if project.demo_url %}
-                  <a class="profile-link-tile project-tile-primary" href="{{ project.demo_url }}" target="_blank" rel="noopener">
-                    <span class="profile-link-name">배포 사이트</span>
-                    <span class="profile-link-meta">{{ project.demo_handle | default: project.demo_url | replace: 'https://', '' | replace: 'http://', '' | replace: '/', '' | escape }} <span aria-hidden="true">↗</span></span>
-                  </a>
-                {% endif %}
-                {% if project.repo_url %}
-                  <a class="profile-link-tile" href="{{ project.repo_url }}" target="_blank" rel="noopener">
-                    <span class="profile-link-name">GitHub</span>
-                    <span class="profile-link-meta">{{ project.repo_handle | default: project.repo_url | replace: 'https://github.com/', '' | escape }} <span aria-hidden="true">↗</span></span>
-                  </a>
-                {% endif %}
-              </div>
-            </article>
-          {% endfor %}
+      <section class="content-section" aria-labelledby="projects-title">
+        <div class="section-heading">
+          <div class="section-heading-left">
+            <h2 id="projects-title">프로젝트 아카이브</h2>
+          </div>
+          <span class="section-count">{{ category_projects | size }}개 프로젝트</span>
         </div>
-      </div>
+        {% include project-showcase.html projects=category_projects %}
+      </section>
     {% endif %}
     {% if category_posts.size > 0 or category_projects.size == 0 %}
-      <div class="section-heading"><h2{% if category_projects.size == 0 %} id="posts-title"{% endif %}>글 목록</h2><span>{{ category_posts | size }}개의 글</span></div>
-      {% if category_posts.size > 0 %}{% include post-search.html %}{% endif %}
-      {% include post-list.html posts=category_posts %}
+      <section class="content-section" aria-labelledby="posts-title">
+        <div class="section-heading">
+          <div class="section-heading-left">
+            <h2 id="posts-title">글 목록</h2>
+          </div>
+          <span class="section-count">{{ category_posts | size }}개의 글</span>
+        </div>
+        {% include post-search.html %}
+        {% include post-list.html posts=category_posts %}
+      </section>
     {% endif %}
-  </section>
+  </div>
 </div>

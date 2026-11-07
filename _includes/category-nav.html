@@ -1,0 +1,17 @@
+<nav class="category-nav" aria-label="카테고리">
+  <h2 class="sidebar-title">카테고리</h2>
+  <ul class="category-list">
+    {% for item in site.data.categories %}
+      {% assign item_post_count = site.categories[item.slug] | size %}
+      {% assign item_project_count = site.data.projects | where: 'category', item.slug | size %}
+      {% assign item_total = item_post_count | plus: item_project_count %}
+      <li>
+        <a href="{{ '/categories/' | append: item.slug | append: '/' | relative_url }}"{% if item.slug == include.current %} aria-current="page"{% endif %}>
+          <span>{{ item.name | escape }}</span>
+          <span class="count" aria-label="{{ item_total }}개의 항목">{{ item_total }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
+
