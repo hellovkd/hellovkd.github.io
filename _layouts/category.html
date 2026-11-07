@@ -5,34 +5,41 @@ layout: default
 {% assign category_posts = site.categories[page.category] %}
 {% assign category_projects = site.data.projects | where: 'category', page.category %}
 
-<header class="category-hero">
-  <h1>{{ category.name | escape }}</h1>
-  <p class="hero-subtext">{{ category.description | escape }}</p>
-</header>
+<div class="category-view">
+  <header class="category-head">
+    <span class="category-kicker">CATEGORY // CLASSIFICATION</span>
+    <h1>{{ category.name | escape }}</h1>
+    {% if category.description %}
+      <p>{{ category.description | escape }}</p>
+    {% endif %}
+  </header>
 
-<div class="layout">
-  <aside class="sidebar">
-    {% include category-nav.html current=page.category %}
-  </aside>
-  <div class="content">
-    {% if category_projects.size > 0 %}
-      <section class="content-section" aria-labelledby="projects-title">
-        <div class="section-heading">
-          <h2 id="projects-title">만든 서비스</h2>
-          <span class="section-count">{{ category_projects | size }}개</span>
-        </div>
-        {% include project-showcase.html projects=category_projects %}
-      </section>
-    {% endif %}
-    {% if category_posts.size > 0 or category_projects.size == 0 %}
-      <section class="content-section" aria-labelledby="posts-title">
-        <div class="section-heading">
-          <h2 id="posts-title">기록 목록</h2>
-          <span class="section-count">{{ category_posts | size }}편</span>
-        </div>
-        {% include post-search.html %}
-        {% include post-list.html posts=category_posts %}
-      </section>
-    {% endif %}
-  </div>
+  <nav class="category-switcher" aria-label="다른 분야 선택">
+    {% for item in site.data.categories %}
+      {% assign item_post_count = site.categories[item.slug] | size %}
+      <a class="category-pill{% if item.slug == page.category %} is-active{% endif %}" href="{{ '/categories/' | append: item.slug | append: '/' | relative_url }}">
+        <span>{{ item.name | escape }}</span>
+        <span class="category-pill-count">{{ item_post_count }}</span>
+      </a>
+    {% endfor %}
+  </nav>
+
+  {% if category_projects.size > 0 %}
+    <section class="category-section" aria-labelledby="cat-projects-title">
+      <div class="category-section-head">
+        <h2 id="cat-projects-title">만든 서비스</h2>
+        <span class="category-section-count">{{ category_projects | size }}개</span>
+      </div>
+      {% include project-showcase.html projects=category_projects %}
+    </section>
+  {% endif %}
+
+  <section class="category-section" aria-labelledby="cat-posts-title">
+    <div class="category-section-head">
+      <h2 id="cat-posts-title">기록 목록</h2>
+      <span class="category-section-count">{{ category_posts | size }}편</span>
+    </div>
+    {% include post-search.html %}
+    {% include post-list.html posts=category_posts %}
+  </section>
 </div>
