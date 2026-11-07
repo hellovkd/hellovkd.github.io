@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" shape-rendering="crispEdges">
+  <!-- Pac-Man 13x13 pixel grid inside 24x24 box -->
+  <!-- Outline -->
+  <path fill="#071512" d="M4 1h6v1h3v1h1v2h1v1h-3v1h-2v1h-2v2h2v1h2v1h3v1h-1v2h-1v1h-3v1H4v-1H2v-1H1v-3H0V7h1V4h1V2h2V1z"/>
+  <!-- Yellow body -->
+  <path fill="#ffd700" d="M4 2h6v1h3v1h1v2H9v1H7v2h2v1h5v2h-1v1h-3v1H4v-1H2v-2H1V7h1V4h2V2z"/>
+  <!-- Highlight -->
+  <rect x="4" y="2" width="2" height="1" fill="#ffffff"/>
+</svg>
