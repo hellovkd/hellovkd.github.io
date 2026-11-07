@@ -1,15 +1,19 @@
 ---
 layout: default
 ---
-<article class="article">
-  <header class="article-header">
-    <h1>{{ page.title | escape }}</h1>
-    <div class="post-meta article-meta">
-      <a class="back-link" href="{{ '/#posts' | relative_url }}">← 기록 목록</a>
-      <time datetime="{{ page.date | date_to_xmlschema }}"><code>게시 {{ page.date | date: '%Y.%m.%d %H:%M' }} (KST)</code></time>
+<article class="article post-article">
+  <header class="article-header post-head">
+    <div class="post-head-meta">
+      <a class="post-back-link" href="{{ '/#posts' | relative_url }}">
+        <svg class="px-icon" viewBox="0 0 24 24" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">
+          <path d="M16 5v2h-2V5h2zm-4 4V7h2v2h-2zm-2 2V9h2v2h-2zm0 2H8v-2h2v2zm2 2v-2h-2v2h2zm0 0h2v2h-2v-2zm4 4v-2h-2v2h2z"/>
+        </svg>
+        <span>기록 목록</span>
+      </a>
+      <time datetime="{{ page.date | date_to_xmlschema }}"><code>{{ page.date | date: '%Y.%m.%d %H:%M' }} KST</code></time>
       {% for slug in page.categories %}
         {% assign category = site.data.categories | where: 'slug', slug | first %}
-        {% if category %}<a class="post-meta-cat" href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}">{{ category.name | escape }}</a>{% endif %}
+        {% if category %}<a class="post-category-chip" href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}">{{ category.name | escape }}</a>{% endif %}
       {% endfor %}
       {% if page.tags.size > 0 %}
         <span class="post-meta-tags">
@@ -17,20 +21,33 @@ layout: default
         </span>
       {% endif %}
     </div>
+    <h1>{{ page.title | escape }}</h1>
   </header>
-  <div class="article-content">{{ content }}</div>
+  <div class="article-content post-prose">{{ content }}</div>
   {% if page.previous or page.next %}
-    <nav class="article-pager" aria-label="이전 및 다음 기록">
+    <nav class="article-pager post-adjacent" aria-label="이전 및 다음 기록">
       {% if page.previous %}
-        <a class="pager-item" href="{{ page.previous.url | relative_url }}">
-          <span class="pager-dir">이전 기록</span>
-          <span class="pager-title">{{ page.previous.title | escape }}</span>
+        <a class="pager-item adjacent-card" href="{{ page.previous.url | relative_url }}">
+          <span class="pager-dir">
+            <svg class="px-icon" viewBox="0 0 24 24" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">
+              <path d="M16 5v2h-2V5h2zm-4 4V7h2v2h-2zm-2 2V9h2v2h-2zm-2 2H8v-2h2v2zm2 2v-2h-2v2h2zm0 0h2v2h-2v-2zm4 4v-2h-2v2h2z"/>
+            </svg>
+            <span>이전 기록</span>
+          </span>
+          <strong class="pager-title">{{ page.previous.title | escape }}</strong>
         </a>
+      {% else %}
+        <div></div>
       {% endif %}
       {% if page.next %}
-        <a class="pager-item pager-next" href="{{ page.next.url | relative_url }}">
-          <span class="pager-dir">다음 기록</span>
-          <span class="pager-title">{{ page.next.title | escape }}</span>
+        <a class="pager-item adjacent-card pager-next" href="{{ page.next.url | relative_url }}">
+          <span class="pager-dir">
+            <span>다음 기록</span>
+            <svg class="px-icon" viewBox="0 0 24 24" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">
+              <path d="M8 5v2h2V5H8zm4 4V7h-2v2h2zm2 2V9h-2v2h2zm0 2h2v-2h-2v2zm-2 2v-2h2v2h-2zm0 0h-2v2h2v-2zm-4 4v-2h2v2H8z"/>
+            </svg>
+          </span>
+          <strong class="pager-title">{{ page.next.title | escape }}</strong>
         </a>
       {% endif %}
     </nav>
