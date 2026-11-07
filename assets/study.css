@@ -36,6 +36,8 @@ button { cursor: pointer; }
 .study-brand { font-weight: 600; }
 .study-header nav { display: flex; gap: 32px; }
 .study-header nav a { display: flex; align-items: center; min-height: 44px; }
+.study-header nav .rss-subscribe { justify-content: center; padding: 0 14px; background: var(--accent); color: var(--accent-ink); white-space: nowrap; }
+.study-header nav .rss-subscribe:hover { text-decoration: underline; }
 .study-header [aria-current="page"] { text-decoration: underline; text-underline-offset: .35em; }
 .masthead { padding-top: 24px; }
 .masthead-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; margin-top: 20px; }
@@ -118,7 +120,7 @@ button { cursor: pointer; }
 @media (max-width: 600px) {
   :root { --gutter: 20px; --display: 48px; --head: 36px; --lead: 24px; }
   .study-header { min-height: 80px; gap: 16px; }
-  .study-header nav { gap: 20px; font-size: var(--small); }
+  .study-header nav { gap: 12px; font-size: var(--small); }
   .masthead { padding-top: 24px; }
   .masthead-intro { align-items: flex-start; flex-direction: column; gap: 28px; }
   .primary-link { padding: 14px 20px; min-height: 52px; }

@@ -8,7 +8,7 @@
       <nav aria-label="주 메뉴">
         <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>홈</a>
         <a href="{{ '/#categories' | relative_url }}">카테고리</a>
-        <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+        <a class="rss-subscribe" href="{{ '/feed.xml' | relative_url }}" type="application/rss+xml">RSS 구독</a>
       </nav>
     </header>
     <main id="main" class="study-shell" tabindex="-1">{{ content }}</main>
