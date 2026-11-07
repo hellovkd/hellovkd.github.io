@@ -6,7 +6,7 @@ layout: default
     <a class="back-link" href="{{ '/' | relative_url }}">← 홈으로</a>
     <h1>{{ page.title | escape }}</h1>
     <div class="post-meta">
-      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y.%m.%d' }}</time>
+      <time datetime="{{ page.date | date_to_xmlschema }}">게시 {{ page.date | date: '%Y.%m.%d' }}</time>
       {% for slug in page.categories %}
         {% assign category = site.data.categories | where: 'slug', slug | first %}
         {% if category %}<a href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}">{{ category.name | escape }}</a>{% endif %}
