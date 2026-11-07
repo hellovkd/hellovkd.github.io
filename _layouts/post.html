@@ -3,15 +3,36 @@ layout: default
 ---
 <article class="article">
   <header class="article-header">
-    <a class="back-link" href="{{ '/' | relative_url }}">← 홈으로</a>
     <h1>{{ page.title | escape }}</h1>
-    <div class="post-meta">
-      <time datetime="{{ page.date | date_to_xmlschema }}">게시 {{ page.date | date: '%Y.%m.%d' }}</time>
+    <div class="post-meta article-meta">
+      <a class="back-link" href="{{ '/#posts' | relative_url }}">← 기록 목록</a>
+      <time datetime="{{ page.date | date_to_xmlschema }}"><code>게시 {{ page.date | date: '%Y.%m.%d %H:%M' }} (KST)</code></time>
       {% for slug in page.categories %}
         {% assign category = site.data.categories | where: 'slug', slug | first %}
-        {% if category %}<a href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}">{{ category.name | escape }}</a>{% endif %}
+        {% if category %}<a class="post-meta-cat" href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}">{{ category.name | escape }}</a>{% endif %}
       {% endfor %}
+      {% if page.tags.size > 0 %}
+        <span class="post-meta-tags">
+          {% for tag in page.tags %}<span>#{{ tag | escape }}</span>{% endfor %}
+        </span>
+      {% endif %}
     </div>
   </header>
   <div class="article-content">{{ content }}</div>
+  {% if page.previous or page.next %}
+    <nav class="article-pager" aria-label="이전 및 다음 기록">
+      {% if page.previous %}
+        <a class="pager-item" href="{{ page.previous.url | relative_url }}">
+          <span class="pager-dir">이전 기록</span>
+          <span class="pager-title">{{ page.previous.title | escape }}</span>
+        </a>
+      {% endif %}
+      {% if page.next %}
+        <a class="pager-item pager-next" href="{{ page.next.url | relative_url }}">
+          <span class="pager-dir">다음 기록</span>
+          <span class="pager-title">{{ page.next.title | escape }}</span>
+        </a>
+      {% endif %}
+    </nav>
+  {% endif %}
 </article>

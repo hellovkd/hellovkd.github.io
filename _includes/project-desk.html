@@ -1,48 +1,85 @@
-<section class="project-desk" aria-labelledby="desk-title" data-project-desk>
+<section id="projects" class="project-desk" aria-labelledby="desk-title" data-project-desk data-slot="tabs">
   <div class="desk-heading">
-    <h2 id="desk-title">만든 것들</h2>
-    <p>하나씩 열어보세요.</p>
+    <h2 id="desk-title">직접 만든 서비스</h2>
+    <p>선택하면 실제 배포 화면과 구현 구성을 확인할 수 있습니다.</p>
   </div>
-  <div class="folder-tabs" role="tablist" aria-label="프로젝트 선택" hidden>
-    {% for project in site.data.projects %}
-      {% assign visual = site.data.project_visuals | where: 'repo', project.repo_handle | first %}
-      <button type="button" class="folder-tab" role="tab" id="project-tab-{{ forloop.index }}" aria-controls="project-panel-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}">
-        <span>{{ visual.tab | default: project.title | escape }}</span><span class="folder-tab-arrow" aria-hidden="true">↗</span>
-      </button>
-    {% endfor %}
-  </div>
-  {% for project in site.data.projects %}
-    {% assign visual = site.data.project_visuals | where: 'repo', project.repo_handle | first %}
-    <article class="folder-panel" id="project-panel-{{ forloop.index }}" data-folder-panel>
-      <div class="folder-content">
-        <div class="folder-copy">
-          <h3>{{ project.title | escape }}</h3>
-          <p class="folder-type">{{ project.type | escape }} · {{ project.period | escape }}</p>
-          <p class="folder-description">{{ project.description | escape }}</p>
-          <ul class="folder-stack" aria-label="사용 기술">{% for tech in project.stack %}<li>{{ tech | escape }}</li>{% endfor %}</ul>
-          <div class="folder-links">
-            <a class="folder-open" href="{{ project.demo_url }}" target="_blank" rel="noopener">사이트 열기 <span aria-hidden="true">↗</span></a>
-            {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank" rel="noopener">GitHub ↗</a>{% endif %}
+  <div class="workbench-grid">
+    <div class="workbench-rail" role="tablist" aria-label="프로젝트 목록" aria-orientation="vertical" data-slot="tabs-list" data-variant="line" hidden>
+      {% for project in site.data.projects %}
+        <button type="button" class="workbench-tab" role="tab" data-slot="tabs-trigger" id="project-tab-{{ forloop.index }}" aria-controls="project-panel-{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}">
+          <span class="workbench-tab-title">{{ project.title | escape }}</span>
+          <span class="workbench-tab-meta">{{ project.type | escape }} · {{ project.period | escape }}</span>
+        </button>
+      {% endfor %}
+    </div>
+    <div class="workbench-stage">
+      {% for project in site.data.projects %}
+        {% assign visual = site.data.project_visuals | where: 'repo', project.repo_handle | first %}
+        <article class="workbench-panel" id="project-panel-{{ forloop.index }}" data-folder-panel data-slot="tabs-content">
+          <div class="workbench-header">
+            <div class="workbench-titles">
+              <h3>{{ project.title | escape }}</h3>
+              <p class="workbench-type">{{ project.type | escape }} · {{ project.period | escape }}{% if project.subtitle %} · {{ project.subtitle | escape }}{% endif %}</p>
+            </div>
+            <div class="workbench-links">
+              {% if project.demo_url %}
+                <a class="workbench-open" href="{{ project.demo_url }}" target="_blank" rel="noopener">사이트 보기 <span aria-hidden="true">↗</span></a>
+              {% endif %}
+              {% if project.repo_url %}
+                <a class="workbench-repo" href="{{ project.repo_url }}" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+              {% endif %}
+            </div>
           </div>
-        </div>
-        {% if visual.image %}
-
-          <figure class="folder-preview">
-            <a href="{{ project.demo_url }}" target="_blank" rel="noopener" aria-label="{{ project.title | escape }} 사이트 열기">
-              <img src="{{ visual.image | relative_url }}" width="1280" height="900" alt="{{ project.title | escape }}의 실제 첫 화면"{% unless forloop.first %} loading="lazy"{% endunless %}>
-              <span class="preview-visit" aria-hidden="true">직접 둘러보기 ↗</span>
-            </a>
-            <figcaption>{{ visual.caption | escape }}<span>공개 사이트 화면</span></figcaption>
-          </figure>
-        {% endif %}
-      </div>
-      <details class="folder-notes">
-        <summary>어떻게 만들었나요?<span class="disclosure-sign" aria-hidden="true"></span></summary>
-        <div class="folder-note-content">
-          <ul>{% for item in project.highlights %}<li>{{ item | escape }}</li>{% endfor %}</ul>
-          <div class="folder-routes"><p>주요 경로</p>{% for route in project.routes %}<code>{{ route | escape }}</code>{% endfor %}</div>
-        </div>
-      </details>
-    </article>
-  {% endfor %}
+          {% if visual.image %}
+            <figure class="workbench-preview">
+              <a class="workbench-preview-link" href="{{ project.demo_url }}" target="_blank" rel="noopener" aria-label="{{ project.title | escape }} 사이트 새 창에서 열기">
+                <img src="{{ visual.image | relative_url }}" width="1280" height="900" alt="{{ project.title | escape }} 실제 서비스 첫 화면"{% unless forloop.first %} loading="lazy"{% endunless %}>
+                <span class="preview-visit" aria-hidden="true">사이트 열기 ↗</span>
+              </a>
+              <figcaption>
+                <span>{{ visual.caption | escape }}</span>
+                <code>{{ project.demo_handle | default: project.repo_handle | escape }}</code>
+              </figcaption>
+            </figure>
+          {% endif %}
+          <div class="workbench-body">
+            <p class="workbench-description">{{ project.description | escape }}</p>
+            {% if project.stack.size > 0 %}
+              <ul class="workbench-stack" aria-label="사용 기술">
+                {% for tech in project.stack %}
+                  <li><code>{{ tech | escape }}</code></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+            <details class="workbench-notes" data-slot="collapsible">
+              <summary>
+                <span>구현 내용 및 주요 경로</span>
+                <span class="disclosure-sign" aria-hidden="true"></span>
+              </summary>
+              <div class="workbench-note-content">
+                {% if project.highlights.size > 0 %}
+                  <ul class="workbench-highlights">
+                    {% for item in project.highlights %}
+                      <li>{{ item | escape }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+                <div class="workbench-routes">
+                  <p>주요 경로 및 저장소</p>
+                  <div class="workbench-route-list">
+                    {% for route in project.routes %}
+                      <code>{{ route | escape }}</code>
+                    {% endfor %}
+                  </div>
+                  {% if project.repo_handle %}
+                    <a class="workbench-repo-path" href="{{ project.repo_url }}" target="_blank" rel="noopener"><code>{{ project.repo_handle | escape }}</code> ↗</a>
+                  {% endif %}
+                </div>
+              </div>
+            </details>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
 </section>

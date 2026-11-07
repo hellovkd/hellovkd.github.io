@@ -1,5 +1,4 @@
 (() => {
-
   const toggle = document.getElementById('theme-toggle');
   if (toggle) {
     const updateLabel = theme => {
@@ -24,18 +23,11 @@
       clearTimeout(resetTimer);
       try {
         await navigator.clipboard.writeText(copyBtn.dataset.copyEmail);
-        badge.textContent = '복사 완료';
+        badge.textContent = '복사됨';
       } catch (_) {
         badge.textContent = '복사 불가';
       }
-      resetTimer = setTimeout(() => { badge.textContent = '복사'; }, 2200);
-    });
-  }
-
-  for (const preview of document.querySelectorAll('[data-preview-src]')) {
-    preview.addEventListener('toggle', () => {
-      const iframe = preview.querySelector('iframe');
-      if (preview.open && !iframe.hasAttribute('src')) iframe.src = preview.dataset.previewSrc;
+      resetTimer = setTimeout(() => { badge.textContent = '주소 복사'; }, 2200);
     });
   }
 
@@ -44,6 +36,9 @@
     const tablist = desk.querySelector('[role="tablist"]');
     const tabs = [...tablist.querySelectorAll('[role="tab"]')];
     const panels = [...desk.querySelectorAll('[data-folder-panel]')];
+    const syncOrientation = () => {
+      tablist.setAttribute('aria-orientation', window.innerWidth > 1020 ? 'vertical' : 'horizontal');
+    };
     const select = (index, focus = false) => {
       tabs.forEach((tab, i) => {
         const active = i === index;
@@ -61,16 +56,41 @@
       panels[index].tabIndex = 0;
       tab.addEventListener('click', () => select(index));
       tab.addEventListener('keydown', event => {
-        const next = { ArrowRight: (index + 1) % tabs.length, ArrowLeft: (index - 1 + tabs.length) % tabs.length, Home: 0, End: tabs.length - 1 }[event.key];
+        const map = {
+          ArrowRight: (index + 1) % tabs.length,
+          ArrowDown: (index + 1) % tabs.length,
+          ArrowLeft: (index - 1 + tabs.length) % tabs.length,
+          ArrowUp: (index - 1 + tabs.length) % tabs.length,
+          Home: 0,
+          End: tabs.length - 1
+        };
+        const next = map[event.key];
         if (next !== undefined) {
           event.preventDefault();
           select(next, true);
         }
       });
     });
+    syncOrientation();
+    window.addEventListener('resize', syncOrientation, { passive: true });
     desk.classList.add('is-enhanced');
     tablist.hidden = false;
     select(0);
+  }
+
+  if (window.IntersectionObserver && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const targets = document.querySelectorAll('.project-desk, .desk-archive, .study-post-row, .desk-contact, .project-entry');
+    targets.forEach(el => el.setAttribute('data-reveal', ''));
+    document.documentElement.classList.add('reveal-ready');
+    const io = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      }
+    }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 });
+    targets.forEach(el => io.observe(el));
   }
 
   const search = document.querySelector('.post-search');
@@ -92,7 +112,8 @@
     let matches = 0;
     for (const row of rows) {
       const inCategory = !selectedCategory || row.dataset.postCategories.split(' ').includes(selectedCategory);
-      const visible = inCategory && normalize(row.dataset.postTitle).includes(query);
+      const haystack = normalize(row.dataset.postSearch || row.dataset.postTitle);
+      const visible = inCategory && haystack.includes(query);
       row.hidden = !visible;
       if (visible) matches += 1;
     }
@@ -100,7 +121,7 @@
     kbd.hidden = !!query;
     if (empty) empty.hidden = !query || matches > 0 || rows.length === 0;
     if (categoryEmpty) categoryEmpty.hidden = !!query || !selectedCategory || matches > 0;
-    status.textContent = query ? `${selectedName ? selectedName + '에서 ' : ''}${matches}개의 글을 찾았습니다.` : selectedCategory ? `${selectedName} · ${matches}개의 글` : '';
+    status.textContent = query ? `${selectedName ? selectedName + '에서 ' : ''}${matches}편의 기록을 찾았습니다.` : selectedCategory ? `${selectedName} · ${matches}편의 기록` : '';
   };
 
   for (const link of categoryLinks) {

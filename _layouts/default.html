@@ -11,10 +11,12 @@
         <div class="top-actions">
           <nav class="top-nav" aria-label="주 메뉴">
             <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>홈</a>
-            <a href="{{ '/categories/development/' | relative_url }}"{% if page.url contains '/categories/' %} aria-current="page"{% endif %}>카테고리</a>
+            <a href="{{ '/#projects' | relative_url }}">작업물</a>
+            <a href="{{ '/#posts' | relative_url }}">기록</a>
+            <a href="{{ '/categories/development/' | relative_url }}"{% if page.url contains '/categories/' %} aria-current="page"{% endif %}>분류</a>
             <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
           </nav>
-          <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크모드 전환" title="테마 변경">
+          <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크모드로 전환" title="다크모드로 전환">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="4"></circle>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
@@ -29,11 +31,14 @@
     <main id="main" class="shell" tabindex="-1">{{ content }}</main>
     <footer class="site-footer">
       <div class="shell site-footer-inner">
-
-        <a class="footer-brand-name" href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
-        <p>{{ site.data.profile.name | default: '윤도현' | escape }} · {{ site.description | escape }}</p>
-        <div class="footer-links">
-          <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+        <div class="footer-colophon">
+          <a class="footer-brand-name" href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
+          <p>{{ site.data.profile.name | default: '윤도현' | escape }} · {{ site.description | escape }}</p>
+        </div>
+        <div class="footer-actions">
+          {% assign profile = site.data.profile %}
+          {% include social-links.html %}
+          <a class="footer-rss" href="{{ '/feed.xml' | relative_url }}">RSS 구독</a>
         </div>
       </div>
     </footer>

@@ -17,6 +17,7 @@ exclude:
   - .agents/
   - .taste-skill/
   - .design
+  - .mcp/
   - gemfiles/
   - Gemfile
   - Gemfile.lock

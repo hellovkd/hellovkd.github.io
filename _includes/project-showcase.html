@@ -1,42 +1,43 @@
 <div class="project-list">
   {% for project in include.projects %}
+    {% assign visual = site.data.project_visuals | where: 'repo', project.repo_handle | first %}
     <article class="project-entry">
-      <div class="project-heading">
-        <h3>
-          {% if project.demo_url %}<a href="{{ project.demo_url }}" target="_blank" rel="noopener">{{ project.title | escape }}</a>{% else %}{{ project.title | escape }}{% endif %}
-        </h3>
-        <p class="project-kind">{{ project.type | escape }}{% if project.period %}<span>{{ project.period | escape }}</span>{% endif %}</p>
-      </div>
-      {% if project.subtitle %}<p class="project-subtitle">{{ project.subtitle | escape }}</p>{% endif %}
-      <p class="project-description">{{ project.description | escape }}</p>
-      {% if project.stack.size > 0 %}
-        <ul class="project-stack" aria-label="사용 기술">
-          {% for tech in project.stack %}<li>{{ tech | escape }}</li>{% endfor %}
-        </ul>
-      {% endif %}
-      <div class="project-links">
-        {% if project.demo_url %}<a href="{{ project.demo_url }}" target="_blank" rel="noopener">사이트 보기 <span aria-hidden="true">↗</span></a>{% endif %}
-        {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>{% endif %}
+      <div class="project-entry-grid">
+        <div class="project-entry-copy">
+          <div class="project-heading">
+            <h3>
+              {% if project.demo_url %}<a href="{{ project.demo_url }}" target="_blank" rel="noopener">{{ project.title | escape }}</a>{% else %}{{ project.title | escape }}{% endif %}
+            </h3>
+            <p class="project-kind">{{ project.type | escape }}{% if project.period %} · <span>{{ project.period | escape }}</span>{% endif %}</p>
+          </div>
+          {% if project.subtitle %}<p class="project-subtitle">{{ project.subtitle | escape }}</p>{% endif %}
+          <p class="project-description">{{ project.description | escape }}</p>
+          {% if project.stack.size > 0 %}
+            <ul class="project-stack" aria-label="사용 기술">
+              {% for tech in project.stack %}<li><code>{{ tech | escape }}</code></li>{% endfor %}
+            </ul>
+          {% endif %}
+          <div class="project-links">
+            {% if project.demo_url %}<a class="project-link-primary" href="{{ project.demo_url }}" target="_blank" rel="noopener">사이트 보기 <span aria-hidden="true">↗</span></a>{% endif %}
+            {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>{% endif %}
+          </div>
+        </div>
+        {% if visual.image %}
+          <figure class="project-thumb">
+            <a href="{{ project.demo_url }}" target="_blank" rel="noopener" aria-label="{{ project.title | escape }} 사이트 열기">
+              <img src="{{ visual.image | relative_url }}" width="1280" height="900" alt="{{ project.title | escape }} 실제 첫 화면" loading="lazy">
+            </a>
+          </figure>
+        {% endif %}
       </div>
       <details class="project-details">
-        <summary>프로젝트 자세히</summary>
+        <summary><span>구현 내용 및 주요 경로</span><span class="disclosure-sign" aria-hidden="true"></span></summary>
         <div class="project-detail-body">
           {% if project.highlights.size > 0 %}<ul class="project-highlights">{% for item in project.highlights %}<li>{{ item | escape }}</li>{% endfor %}</ul>{% endif %}
           {% if project.routes.size > 0 %}<div class="project-routes"><span>주요 경로</span>{% for route in project.routes %}<code>{{ route | escape }}</code>{% endfor %}</div>{% endif %}
-          {% if project.repo_handle %}<a class="project-repository" href="{{ project.repo_url }}" target="_blank" rel="noopener">{{ project.repo_handle | escape }} ↗</a>{% endif %}
+          {% if project.repo_handle %}<a class="project-repository" href="{{ project.repo_url }}" target="_blank" rel="noopener"><code>{{ project.repo_handle | escape }}</code> ↗</a>{% endif %}
         </div>
       </details>
-      {% if project.demo_url %}
-
-        <details class="project-details project-preview" data-preview-src="{{ project.demo_url | escape }}">
-          <summary>사이트 미리보기</summary>
-          <div class="preview-toolbar">
-            <p>화면이 표시되지 않으면 새 창에서 확인해 주세요.</p>
-            <a href="{{ project.demo_url }}" target="_blank" rel="noopener">새 창에서 열기 ↗</a>
-          </div>
-          <iframe title="{{ project.title | escape }} 미리보기" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </details>
-      {% endif %}
     </article>
   {% endfor %}
 </div>

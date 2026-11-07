@@ -1,18 +1,15 @@
 ---
 layout: default
 ---
-
 {% assign category = site.data.categories | where: 'slug', page.category | first %}
 {% assign category_posts = site.categories[page.category] %}
 {% assign category_projects = site.data.projects | where: 'category', page.category %}
-<header class="hero-editorial category-hero">
-  <div class="hero-meta-col">
-    <h1>{{ category.name | escape }}</h1>
-  </div>
-  <div class="hero-statement-col">
-    <p class="hero-subtext">{{ category.description | escape }}</p>
-  </div>
+
+<header class="category-hero">
+  <h1>{{ category.name | escape }}</h1>
+  <p class="hero-subtext">{{ category.description | escape }}</p>
 </header>
+
 <div class="layout">
   <aside class="sidebar">
     {% include category-nav.html current=page.category %}
@@ -21,10 +18,8 @@ layout: default
     {% if category_projects.size > 0 %}
       <section class="content-section" aria-labelledby="projects-title">
         <div class="section-heading">
-          <div class="section-heading-left">
-            <h2 id="projects-title">프로젝트 아카이브</h2>
-          </div>
-          <span class="section-count">{{ category_projects | size }}개 프로젝트</span>
+          <h2 id="projects-title">만든 서비스</h2>
+          <span class="section-count">{{ category_projects | size }}개</span>
         </div>
         {% include project-showcase.html projects=category_projects %}
       </section>
@@ -32,10 +27,8 @@ layout: default
     {% if category_posts.size > 0 or category_projects.size == 0 %}
       <section class="content-section" aria-labelledby="posts-title">
         <div class="section-heading">
-          <div class="section-heading-left">
-            <h2 id="posts-title">글 목록</h2>
-          </div>
-          <span class="section-count">{{ category_posts | size }}개의 글</span>
+          <h2 id="posts-title">기록 목록</h2>
+          <span class="section-count">{{ category_posts | size }}편</span>
         </div>
         {% include post-search.html %}
         {% include post-list.html posts=category_posts %}
