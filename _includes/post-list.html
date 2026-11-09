@@ -5,7 +5,7 @@
       {% assign category = site.data.categories | where: 'slug', slug | first %}
       {% if category %}{% assign cat_names = cat_names | append: ' ' | append: category.name %}{% endif %}
     {% endfor %}
-    <article class="study-post-row" data-post-title="{{ post.title | escape }}" data-post-search="{{ post.title | append: ' ' | append: cat_names | append: ' ' | append: (post.tags | join: ' ') | escape }}" data-post-categories="{{ post.categories | join: ' ' | escape }}">
+    <article class="study-post-row" data-post-title="{{ post.title | escape }}" data-post-search="{{ post.title | append: ' ' | append: cat_names | append: ' ' | append: (post.tags | join: ' ') | escape }}" data-post-categories="{{ post.categories | join: ' ' | escape }}"{% if include.exclude_category and post.categories contains include.exclude_category %} hidden{% endif %}>
       <h3>
         <a href="{{ post.url | relative_url }}">
           <span>{{ post.title | escape }}</span>

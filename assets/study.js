@@ -104,6 +104,7 @@
   const categoryEmpty = document.querySelector('[data-category-empty]');
   const categoryDestination = document.querySelector('[data-category-destination]');
   const categoryLinks = [...document.querySelectorAll('[data-archive-filters] [data-category]')];
+  const excludedFromAll = document.querySelector('[data-archive-filters]')?.dataset.excludeFromAll;
   let selectedCategory = '';
   let selectedName = '';
   const normalize = value => value.normalize('NFKC').toLocaleLowerCase('ko').trim();
@@ -111,7 +112,10 @@
     const query = normalize(input.value);
     let matches = 0;
     for (const row of rows) {
-      const inCategory = !selectedCategory || row.dataset.postCategories.split(' ').includes(selectedCategory);
+      const categories = row.dataset.postCategories.split(' ');
+      const inCategory = selectedCategory
+        ? categories.includes(selectedCategory)
+        : !excludedFromAll || !categories.includes(excludedFromAll);
       const haystack = normalize(row.dataset.postSearch || row.dataset.postTitle);
       const visible = inCategory && haystack.includes(query);
       row.hidden = !visible;
@@ -161,4 +165,5 @@
     filter();
     input.focus();
   });
+  filter();
 })();
