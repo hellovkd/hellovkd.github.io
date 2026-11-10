@@ -110,6 +110,164 @@
   box-shadow: 6px 6px 0 var(--ink);
 }
 
+.profile-desk {
+  padding: 40px;
+  margin-bottom: 56px;
+  background: var(--surface);
+  border: 4px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
+  position: relative;
+}
+.profile-desk::before {
+  content: "PLAYER PROFILE // ABOUT & TIMELINE";
+  position: absolute;
+  top: -16px;
+  left: 24px;
+  padding: 4px 12px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.profile-desk .desk-heading p {
+  margin-top: 6px;
+  font-size: 15px;
+  color: var(--muted);
+}
+.profile-more-link, .profile-more-link:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 16px;
+  background: var(--ink);
+  color: var(--bg);
+  border: 3px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--accent);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 80ms steps(2), background-color 80ms steps(2);
+}
+.profile-more-link:hover {
+  background: var(--accent);
+  color: var(--on-accent);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.profile-desk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 28px;
+  align-items: stretch;
+}
+.profile-about-card,
+.profile-timeline-card {
+  background: var(--bg);
+  padding: 28px;
+  border: 4px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.profile-card-head {
+  padding-bottom: 14px;
+  border-bottom: 3px dashed var(--border);
+}
+.profile-chip {
+  display: inline-block;
+  padding: 3px 8px;
+  margin-bottom: 10px;
+  background: var(--surface-strong);
+  border: 2px solid var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.profile-card-head h3 {
+  font-size: 21px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.profile-card-head h3 code {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.profile-intro-text {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--ink);
+}
+.profile-subblock {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 2px dashed var(--border);
+}
+.profile-subhead {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--muted);
+}
+.profile-subblock .workbench-stack { margin-top: 0; }
+.profile-timeline {
+  list-style: none;
+  display: grid;
+  gap: 16px;
+}
+.timeline-item {
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 3px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.timeline-item.is-highlight {
+  background: var(--surface-strong);
+}
+.timeline-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.timeline-period {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.timeline-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  background: var(--ink);
+  color: var(--bg);
+}
+.timeline-title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.timeline-desc {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
 .project-desk {
   padding: 40px;
   background: var(--surface);
@@ -486,6 +644,8 @@
 
 @media (max-width: 1020px) {
   .desk-intro { gap: 28px; padding: 28px; }
+  .profile-desk { padding: 28px; }
+  .profile-desk-grid { grid-template-columns: 1fr; }
   .project-desk { padding: 28px; }
   .project-desk.is-enhanced .workbench-grid { grid-template-columns: 1fr; gap: 20px; }
   .workbench-rail { position: static; grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -502,6 +662,8 @@
   .desk-author-bar { margin-top: 18px; }
   .desk-hero-actions { width: 100%; }
   .desk-cta-primary, .desk-cta-secondary { flex: 1; justify-content: center; }
+  .profile-desk { padding: 26px 18px; margin-bottom: 44px; }
+  .profile-about-card, .profile-timeline-card { padding: 20px 16px; }
   .project-desk { padding: 26px 18px; }
   .desk-heading { margin-bottom: 18px; }
   .desk-heading h2 { font-size: 22px; }

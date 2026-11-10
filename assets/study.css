@@ -341,7 +341,53 @@ main.shell { padding-bottom: 108px; }
   margin-bottom: 14px;
 }
 .category-head h1, .static-head h1 { font-size: clamp(28px, 4vw, 42px); line-height: 1.25; margin: 0; }
-.category-head > p { margin-top: 14px; color: var(--muted); font-size: 16px; line-height: 1.7; max-width: 60ch; }
+.category-head > p, .static-subtitle { margin-top: 14px; color: var(--muted); font-size: 16px; line-height: 1.7; max-width: 60ch; }
+
+.about-timeline {
+  display: grid;
+  gap: 18px;
+  margin-block: 18px;
+}
+.about-timeline-card {
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.about-timeline-card.is-primary {
+  background: var(--surface-strong);
+}
+.about-timeline-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.post-prose .about-timeline-card h3 {
+  margin-top: 0;
+  font-size: 18px;
+}
+.post-prose .about-timeline-card p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.75;
+}
+.about-period {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.about-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: var(--ink);
+  color: var(--bg);
+}
 
 .category-switcher { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
 .category-pill {
@@ -508,6 +554,139 @@ main.shell { padding-bottom: 108px; }
 }
 
 .post-article, .static-page { max-width: 860px; margin-inline: auto; padding-top: 40px; }
+.post-article.has-toc { max-width: 1120px; }
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  z-index: 200;
+  background: var(--surface);
+  border-bottom: 2px solid var(--ink);
+  pointer-events: none;
+}
+.reading-progress-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--ink);
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+.post-body-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+.post-article.has-toc .post-body-grid {
+  grid-template-columns: minmax(0, 1fr) 268px;
+}
+.post-toc-rail {
+  position: sticky;
+  top: 28px;
+}
+.post-toc-card {
+  padding: 20px;
+  background: var(--surface);
+  border: 4px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.post-toc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 3px solid var(--ink);
+}
+.post-toc-kicker {
+  padding: 3px 8px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.post-toc-pct {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.post-toc-list {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  max-height: 62vh;
+  overflow-y: auto;
+}
+.post-toc-item.is-sub {
+  padding-left: 12px;
+}
+.post-toc-link {
+  display: block;
+  padding: 6px 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink);
+  background: var(--bg);
+  border: 2px solid var(--ink);
+  transition: background-color 120ms ease, color 120ms ease, transform 120ms ease;
+}
+.post-toc-link:hover {
+  background: var(--surface-strong);
+  color: var(--ink);
+  transform: translate3d(-2px, -2px, 0);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.post-toc-link.is-active {
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 700;
+  box-shadow: 2px 2px 0 var(--accent);
+}
+.post-toc-link.is-active::before {
+  content: "▶ ";
+  font-size: 10px;
+}
+.post-toc-top {
+  width: 100%;
+  margin-top: 14px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.post-toc-top:hover {
+  background: var(--surface-strong);
+}
+
+@media (max-width: 1020px) {
+  .post-article.has-toc .post-body-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .post-toc-rail {
+    position: static;
+    order: -1;
+  }
+  .post-toc-list {
+    max-height: none;
+  }
+}
 .post-head {
   padding: 32px;
   background: var(--surface);
@@ -671,9 +850,160 @@ main.shell { padding-bottom: 108px; }
   .brand { font-size: 17px; padding: 5px 9px; }
   .top-actions, .top-nav { gap: 6px; }
   .top-nav a { font-size: 12px; padding: 4px 7px; min-height: 34px; }
-  .top-nav a:nth-child(4), .top-nav a:nth-child(5) { display: none; }
+  .top-nav a:nth-child(5), .top-nav a:nth-child(6) { display: none; }
   .theme-toggle { width: 36px; height: 36px; }
   .post-prose { padding: 22px 18px; }
   .post-head { padding: 22px 18px; }
   .post-adjacent { grid-template-columns: 1fr; }
+}
+
+/* --- Retro Terminal Boot Intro & Page Reveal Effects --- */
+.boot-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(7, 21, 18, 0.06) 0px,
+      rgba(7, 21, 18, 0.06) 2px,
+      transparent 2px,
+      transparent 4px
+    ),
+    radial-gradient(var(--dot) 2px, transparent 2px);
+  background-size: 100% 4px, 16px 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: pointer;
+}
+html.is-booting .boot-overlay,
+.boot-overlay.is-closing {
+  display: flex;
+}
+.boot-overlay.is-closing {
+  animation: boot-curtain-out 360ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+@keyframes boot-curtain-out {
+  0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  100% { opacity: 0; transform: translate3d(0, -10px, 0) scale(1.015); }
+}
+.boot-window {
+  width: 100%;
+  max-width: 540px;
+  background: var(--surface);
+  border: 4px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--ink);
+  animation: boot-pop-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: opacity, transform;
+}
+@keyframes boot-pop-in {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.boot-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.boot-skip {
+  font-size: 11px;
+  opacity: 0.8;
+}
+.boot-body {
+  padding: 24px 22px;
+  background: var(--bg);
+}
+.boot-log {
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--ink);
+  min-height: 78px;
+}
+.boot-line {
+  opacity: 0;
+  transform: translate3d(-6px, 0, 0);
+  transition: opacity 200ms cubic-bezier(0.22, 1, 0.36, 1), transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.boot-line.is-shown {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.boot-ok {
+  color: var(--accent);
+  font-weight: 700;
+}
+.boot-progress-wrap {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.boot-progress-track {
+  flex: 1;
+  height: 22px;
+  padding: 3px;
+  background: var(--surface);
+  border: 3px solid var(--ink);
+  overflow: hidden;
+}
+.boot-progress-fill {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ink) 0px,
+    var(--ink) 10px,
+    transparent 10px,
+    transparent 13px
+  );
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.boot-progress-pct {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  min-width: 42px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Staggered Entrance & Scroll Reveal (GPU Smooth 60fps) */
+html.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  will-change: opacity, transform;
+}
+html.reveal-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 440ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 440ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-overlay { display: none !important; }
+  html.reveal-ready [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }

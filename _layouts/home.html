@@ -12,7 +12,7 @@ layout: default
       <p>{{ profile.bio | escape }}</p>
       <div class="desk-author-bar">
         <div class="desk-identity">
-          <span class="desk-author-name">{{ profile.name | escape }}</span>
+          <a class="desk-author-name" href="{{ '/about/' | relative_url }}">{{ profile.name | escape }}</a>
           {% include social-links.html %}
         </div>
         <div class="desk-hero-actions">
@@ -22,11 +22,14 @@ layout: default
               <path d="M11 4h2v12h2v2h-2v2h-2v-2H9v-2h2V4zM7 14v2h2v-2H7zm0 0v-2H5v2h2zm10 0v2h-2v-2h2zm0 0v-2h2v2h-2z"/>
             </svg>
           </a>
+          <a class="desk-cta-secondary" href="{{ '/about/' | relative_url }}">프로필</a>
           <a class="desk-cta-secondary" href="#projects">작업물 보기</a>
         </div>
       </div>
     </div>
   </section>
+
+  {% include profile-desk.html %}
 
   {% include project-desk.html %}
 

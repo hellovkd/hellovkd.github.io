@@ -78,19 +78,184 @@
     select(0);
   }
 
-  if (window.IntersectionObserver && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const targets = document.querySelectorAll('.project-desk, .desk-archive, .study-post-row, .desk-contact, .project-entry');
-    targets.forEach(el => el.setAttribute('data-reveal', ''));
-    document.documentElement.classList.add('reveal-ready');
-    const io = new IntersectionObserver(entries => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          io.unobserve(entry.target);
-        }
+  const runHeadlineTyping = () => {
+    const heading = document.getElementById('site-heading');
+    if (!heading || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const spans = [...heading.querySelectorAll('span')];
+    if (spans.length === 0) return;
+    // Lock heading height before clearing text so layout never jumps during typing
+    heading.style.minHeight = `${heading.offsetHeight}px`;
+    const texts = spans.map(s => s.textContent);
+    spans.forEach(s => { s.textContent = '\u00A0'; });
+    let spanIdx = 0;
+    let charIdx = 0;
+    const step = () => {
+      if (spanIdx >= spans.length) {
+        heading.style.minHeight = '';
+        return;
       }
-    }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 });
-    targets.forEach(el => io.observe(el));
+      charIdx += 1;
+      spans[spanIdx].textContent = texts[spanIdx].slice(0, charIdx);
+      if (charIdx < texts[spanIdx].length) {
+        setTimeout(step, 95);
+      } else {
+        spanIdx += 1;
+        charIdx = 0;
+        if (spanIdx < spans.length) setTimeout(step, 240);
+        else heading.style.minHeight = '';
+      }
+    };
+    setTimeout(step, 120);
+  };
+
+  const initRevealAndTyping = () => {
+    runHeadlineTyping();
+    if (window.IntersectionObserver && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const targets = document.querySelectorAll(
+        '.desk-intro, .profile-desk, .project-desk, .desk-archive, .study-post-row, .desk-contact, .project-entry, .post-head, .post-prose, .category-head, .static-head, .about-timeline-card'
+      );
+      targets.forEach((el, idx) => {
+        el.setAttribute('data-reveal', '');
+        if (idx < 4) {
+          el.style.setProperty('--reveal-delay', `${idx * 120}ms`);
+        }
+      });
+      document.documentElement.classList.add('reveal-ready');
+      const io = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        }
+      }, { rootMargin: '0px 0px -30px 0px', threshold: 0.04 });
+      requestAnimationFrame(() => {
+        targets.forEach(el => io.observe(el));
+      });
+    }
+  };
+
+  const bootOverlay = document.getElementById('boot-overlay');
+  if (bootOverlay && document.documentElement.classList.contains('is-booting')) {
+    const lines = [...bootOverlay.querySelectorAll('.boot-line')];
+    const fill = document.getElementById('boot-progress-fill');
+    const pct = document.getElementById('boot-progress-pct');
+    let finished = false;
+    const timers = [];
+
+    const setProgress = value => {
+      if (fill) fill.style.transform = `scaleX(${value / 100})`;
+      if (pct) pct.textContent = `${value}%`;
+    };
+
+    const finishBoot = () => {
+      if (finished) return;
+      finished = true;
+      timers.forEach(clearTimeout);
+      setProgress(100);
+      lines.forEach(l => l.classList.add('is-shown'));
+      bootOverlay.classList.add('is-closing');
+      document.documentElement.classList.remove('is-booting');
+      initRevealAndTyping();
+      setTimeout(() => {
+        bootOverlay.classList.remove('is-closing');
+        bootOverlay.hidden = true;
+      }, 380);
+    };
+
+    setProgress(20);
+    timers.push(setTimeout(() => {
+      if (lines[1]) lines[1].classList.add('is-shown');
+      setProgress(60);
+    }, 480));
+    timers.push(setTimeout(() => {
+      if (lines[2]) lines[2].classList.add('is-shown');
+      setProgress(100);
+    }, 980));
+    timers.push(setTimeout(finishBoot, 1500));
+
+    bootOverlay.addEventListener('click', finishBoot, { once: true });
+    window.addEventListener('keydown', finishBoot, { once: true });
+  } else {
+    initRevealAndTyping();
+  }
+
+  // Post Reading Progress Bar & Auto Table of Contents (TOC)
+  const postArticle = document.querySelector('[data-post-article]');
+  if (postArticle) {
+    const prose = postArticle.querySelector('[data-post-prose]');
+    const tocRail = document.getElementById('post-toc-rail');
+    const tocList = document.getElementById('post-toc-list');
+    const tocPct = document.getElementById('post-toc-pct');
+    const tocTopBtn = document.getElementById('post-toc-top');
+    const progressFill = document.getElementById('reading-progress-fill');
+
+    const headings = prose ? [...prose.querySelectorAll('h2, h3')] : [];
+    const tocLinks = [];
+
+    if (headings.length >= 2 && tocRail && tocList) {
+      headings.forEach((heading, idx) => {
+        if (!heading.id) {
+          const slug = heading.textContent
+            .trim()
+            .toLowerCase()
+            .replace(/[^\p{L}\p{N}\s-]/gu, '')
+            .replace(/\s+/g, '-');
+          heading.id = slug ? `section-${slug}-${idx + 1}` : `section-${idx + 1}`;
+        }
+        const li = document.createElement('li');
+        li.className = `post-toc-item${heading.tagName === 'H3' ? ' is-sub' : ''}`;
+        const a = document.createElement('a');
+        a.className = 'post-toc-link';
+        a.href = `#${heading.id}`;
+        a.textContent = heading.textContent.trim();
+        li.appendChild(a);
+        tocList.appendChild(li);
+        tocLinks.push({ heading, link: a });
+      });
+      postArticle.classList.add('has-toc');
+      tocRail.hidden = false;
+    }
+
+    if (tocTopBtn) {
+      tocTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    let ticking = false;
+    const updateReadingState = () => {
+      ticking = false;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = docHeight > 0 ? Math.min(1, Math.max(0, window.scrollY / docHeight)) : 1;
+      if (progressFill) {
+        progressFill.style.transform = `scaleX(${ratio})`;
+      }
+      if (tocPct) {
+        tocPct.textContent = `${Math.round(ratio * 100)}%`;
+      }
+      if (tocLinks.length > 0) {
+        let activeIndex = 0;
+        const offset = 130;
+        for (let i = 0; i < tocLinks.length; i += 1) {
+          if (tocLinks[i].heading.getBoundingClientRect().top <= offset) {
+            activeIndex = i;
+          }
+        }
+        tocLinks.forEach((item, i) => {
+          item.link.classList.toggle('is-active', i === activeIndex);
+        });
+      }
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateReadingState);
+      }
+    }, { passive: true });
+    window.addEventListener('resize', updateReadingState, { passive: true });
+    updateReadingState();
   }
 
   const search = document.querySelector('.post-search');

@@ -10,6 +10,16 @@
       var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       var theme = saved === 'light' || saved === 'dark' ? saved : (prefersDark ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', theme);
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var sameOriginRef = false;
+      try {
+        sameOriginRef = Boolean(document.referrer && new URL(document.referrer).origin === location.origin);
+      } catch (_) {}
+      var navEntry = window.performance && performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+      var isReload = navEntry && navEntry.type === 'reload';
+      if (!reduced && (!sameOriginRef || isReload)) {
+        document.documentElement.classList.add('is-booting');
+      }
     })();
   </script>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>

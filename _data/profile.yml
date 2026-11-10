@@ -1,5 +1,26 @@
 name: 윤도현
+handle: hellovkd
+affiliation: 중부대학교 정보보호학전공 (2023~)
 bio: 개발과 보안을 공부하며 직접 만든 서비스, 분석한 취약점, 풀었던 워게임을 기록합니다.
+
+education:
+  - period: "2023 ~ 현재"
+    title: "중부대학교 정보보호학전공"
+    badge: "학력"
+
+careers:
+  - period: "2026 ~ 현재"
+    title: "나이츠 프론티어 (Knights Frontier) 3기"
+    badge: "대외활동"
+
+values:
+  - title: "사회적 인정"
+    description: "다른 사람들을 해킹의 위협으로부터 지키고, 내가 하는 일이 사회적인 인정을 받는 것"
+  - title: "워라밸"
+    description: "운동, 자기계발, 취미생활을 꾸준히 이어가기 위해 나만의 시간을 확보하는 것"
+  - title: "재미"
+    description: "공부를 계속 이어가기 위한 가장 중요한 원동력"
+
 links:
   - name: GitHub
     handle: github.com/hellovkd

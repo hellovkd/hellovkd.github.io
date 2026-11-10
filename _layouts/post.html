@@ -1,7 +1,11 @@
 ---
 layout: default
 ---
-<article class="article post-article">
+<div class="reading-progress" id="reading-progress" aria-hidden="true">
+  <div class="reading-progress-fill" id="reading-progress-fill"></div>
+</div>
+
+<article class="article post-article" data-post-article>
   <header class="article-header post-head">
     <div class="post-head-meta">
       <a class="post-back-link" href="{{ '/#posts' | relative_url }}">
@@ -23,7 +27,25 @@ layout: default
     </div>
     <h1>{{ page.title | escape }}</h1>
   </header>
-  <div class="article-content post-prose">{{ content }}</div>
+
+  <div class="post-body-grid" data-post-grid>
+    <div class="article-content post-prose" data-post-prose>{{ content }}</div>
+    <aside class="post-toc-rail" id="post-toc-rail" aria-label="문서 목차" hidden>
+      <div class="post-toc-card">
+        <div class="post-toc-head">
+          <span class="post-toc-kicker">INDEX // TOC</span>
+          <span class="post-toc-pct" id="post-toc-pct">0%</span>
+        </div>
+        <nav class="post-toc-nav" aria-label="섹션 이동">
+          <ol class="post-toc-list" id="post-toc-list"></ol>
+        </nav>
+        <button type="button" class="post-toc-top" id="post-toc-top">
+          <span>맨 위로 이동</span>
+          <span>↑</span>
+        </button>
+      </div>
+    </aside>
+  </div>
   {% if page.previous or page.next %}
     <nav class="article-pager post-adjacent" aria-label="이전 및 다음 기록">
       {% if page.previous %}

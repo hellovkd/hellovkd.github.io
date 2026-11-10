@@ -2,6 +2,27 @@
 <html lang="ko">
   {% include head.html %}
   <body>
+    <div class="boot-overlay" id="boot-overlay" aria-hidden="true">
+      <div class="boot-window">
+        <div class="boot-bar">
+          <span class="boot-title">BOOT SEQUENCE // MY STUDY OS</span>
+          <span class="boot-skip">ESC / CLICK TO SKIP</span>
+        </div>
+        <div class="boot-body">
+          <ul class="boot-log" id="boot-log">
+            <li class="boot-line is-shown">&gt; INITIALIZING WORKBENCH KERNEL... <span class="boot-ok">[OK]</span></li>
+            <li class="boot-line">&gt; LOADING SECURITY &amp; STUDY MODULES... <span class="boot-ok">[OK]</span></li>
+            <li class="boot-line">&gt; MOUNTING ARCHIVE: @{{ site.data.profile.handle | default: site.github_username | escape }}... <span class="boot-ok">[READY]</span></li>
+          </ul>
+          <div class="boot-progress-wrap">
+            <div class="boot-progress-track">
+              <div class="boot-progress-fill" id="boot-progress-fill"></div>
+            </div>
+            <span class="boot-progress-pct" id="boot-progress-pct">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
     <a class="skip-link" href="#main">본문으로 건너뛰기</a>
     <header class="site-top">
       <div class="shell site-top-inner">
@@ -11,6 +32,7 @@
         <div class="top-actions">
           <nav class="top-nav" aria-label="주 메뉴">
             <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>홈</a>
+            <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>프로필</a>
             <a href="{{ '/#projects' | relative_url }}">작업물</a>
             <a href="{{ '/#posts' | relative_url }}">기록</a>
             <a href="{{ '/categories/development/' | relative_url }}"{% if page.url contains '/categories/' %} aria-current="page"{% endif %}>분류</a>

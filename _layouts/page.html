@@ -2,6 +2,10 @@
 layout: default
 ---
 <article class="article static-page">
-  <header class="article-header static-head"><h1>{{ page.title | escape }}</h1></header>
+  <header class="article-header static-head">
+    {% if page.kicker %}<span class="category-kicker">{{ page.kicker | escape }}</span>{% endif %}
+    <h1>{{ page.title | escape }}</h1>
+    {% if page.subtitle %}<p class="static-subtitle">{{ page.subtitle | escape }}</p>{% endif %}
+  </header>
   <div class="article-content post-prose">{{ content }}</div>
 </article>
