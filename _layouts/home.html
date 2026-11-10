@@ -2,6 +2,8 @@
 layout: default
 ---
 {% assign profile = site.data.profile %}
+{% assign all_posts_excluded_category = 'security-issues' %}
+{% assign all_posts_excluded_count = site.categories[all_posts_excluded_category] | size %}
 
 <div class="desk-home">
   <section class="desk-intro" aria-labelledby="site-heading">
@@ -38,10 +40,10 @@ layout: default
       <div class="archive-sticky">
         <h2 id="posts-title">기록</h2>
         <p>배운 것과 분석한 과정을 남깁니다.</p>
-        <nav class="archive-filters" aria-label="기록 분야 선택" data-archive-filters>
+        <nav class="archive-filters" aria-label="기록 분야 선택" data-archive-filters data-exclude-from-all="{{ all_posts_excluded_category }}">
           <a class="archive-filter" href="{{ '/#posts' | relative_url }}" data-category="" aria-current="true">
             <span>전체 기록</span>
-            <span class="archive-count">{{ site.posts | size }}</span>
+            <span class="archive-count">{{ site.posts | size | minus: all_posts_excluded_count }}</span>
           </a>
           {% for category in site.data.categories %}
             <a class="archive-filter" href="{{ '/categories/' | append: category.slug | append: '/' | relative_url }}" data-category="{{ category.slug }}">
@@ -54,7 +56,7 @@ layout: default
     </div>
     <div class="archive-reading">
       {% include post-search.html %}
-      {% include post-list.html posts=site.posts %}
+      {% include post-list.html posts=site.posts exclude_category=all_posts_excluded_category %}
       <div class="archive-empty" data-category-empty hidden>
         <h3>아직 작성 중인 분야입니다</h3>
         <p>선택한 분야에는 아직 공개된 기록이 없습니다.</p>
