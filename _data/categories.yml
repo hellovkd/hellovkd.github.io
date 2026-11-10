@@ -7,6 +7,9 @@
 - slug: bug-bounty
   name: Bug Bounty
   description: 취약점을 찾고 분석한 과정과 리서치 기록.
+- slug: security-issues
+  name: 보안 이슈
+  description: X에서 확인한 보안 이슈를 날짜별로 정리한 기록.
 - slug: blog-docs
   name: 블로그/기술문서
   description: 공부하며 참고한 기술 문서와 정리한 내용.
