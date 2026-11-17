@@ -757,8 +757,12 @@ main.shell { padding-bottom: 108px; }
   border: 3px solid var(--ink);
   box-shadow: 4px 4px 0 var(--ink);
 }
-.post-prose table { width: 100%; border-collapse: collapse; font-size: 14px; border: 3px solid var(--ink); }
-.post-prose th, .post-prose td { padding: 10px 12px; text-align: left; border: 2px solid var(--ink); }
+/* 기본 테마의 고정 글자색과 흰 줄무늬를 덮어써 두 모드에서 표의 대비를 유지합니다. */
+.post-prose table { width: 100%; border-collapse: collapse; font-size: 14px; color: var(--ink); background: var(--bg); border: 3px solid var(--border); }
+.post-prose tr { background: var(--bg); }
+.post-prose tr:nth-child(even) { background: var(--surface); }
+/* 구분선은 테마의 테두리 색으로, 머리글은 한 단계 진한 배경으로 구별합니다. */
+.post-prose th, .post-prose td { padding: 10px 12px; text-align: left; border: 2px solid var(--border); }
 .post-prose th { background: var(--surface-strong); font-family: var(--font-display); font-weight: 700; }
 
 /* 각주 번호에 마우스를 올리면 설명을 표시하며, 터치 기기에서도 누르기 쉬운 영역을 유지합니다. */
