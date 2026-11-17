@@ -190,6 +190,187 @@
     const tocTopBtn = document.getElementById('post-toc-top');
     const progressFill = document.getElementById('reading-progress-fill');
 
+    // Jekyll이 만든 각주 링크를 보강하고, 미지원 브라우저에서는 원래 하단 이동을 유지합니다.
+    if (prose && typeof HTMLElement.prototype.showPopover === 'function') {
+      const footnotes = [...prose.querySelectorAll('a.footnote')].flatMap(link => {
+        const href = link.getAttribute('href');
+        if (!href?.startsWith('#')) return [];
+        let note;
+        try { note = document.getElementById(decodeURIComponent(href.slice(1))); } catch (_) { return []; }
+        return note && prose.contains(note) && note.closest('.footnotes') ? [{ link, note }] : [];
+      });
+
+      if (footnotes.length > 0) {
+        const popover = document.createElement('div');
+        popover.id = 'post-footnote-popover';
+        popover.className = 'footnote-popover';
+        popover.setAttribute('popover', 'auto');
+        popover.setAttribute('role', 'dialog');
+        popover.setAttribute('aria-labelledby', 'post-footnote-title');
+        popover.setAttribute('aria-describedby', 'post-footnote-body');
+        popover.tabIndex = -1;
+
+        const header = document.createElement('div');
+        header.className = 'footnote-popover-header';
+        const title = document.createElement('span');
+        title.id = 'post-footnote-title';
+        const closeButton = document.createElement('button');
+        closeButton.type = 'button';
+        closeButton.className = 'footnote-popover-close';
+        closeButton.textContent = '닫기';
+        closeButton.setAttribute('aria-label', '각주 닫기');
+        header.append(title, closeButton);
+
+        const body = document.createElement('div');
+        body.id = 'post-footnote-body';
+        body.className = 'footnote-popover-body';
+        popover.append(header, body);
+        document.body.appendChild(popover);
+        let activeLink = null;
+        let pressedOpenLink = null;
+        let positionFrame = 0;
+        let hideTimer;
+        let restoringFocus = false;
+
+        // 번호 아래에 배치하되, 화면 아래쪽에서는 위로 열고 모바일 화면 안으로 위치를 보정합니다.
+        const positionPopover = () => {
+          positionFrame = 0;
+          if (!activeLink || !popover.matches(':popover-open')) return;
+          const viewport = window.visualViewport;
+          const viewportLeft = viewport?.offsetLeft || 0;
+          const viewportTop = viewport?.offsetTop || 0;
+          const viewportWidth = viewport?.width || window.innerWidth;
+          const viewportHeight = viewport?.height || window.innerHeight;
+          const margin = 12;
+          const gap = 10;
+          const anchor = activeLink.getBoundingClientRect();
+          if (anchor.bottom < viewportTop || anchor.top > viewportTop + viewportHeight) {
+            popover.hidePopover();
+            return;
+          }
+          popover.style.width = `${Math.min(360, viewportWidth - margin * 2)}px`;
+          popover.style.maxHeight = `${viewportHeight - margin * 2}px`;
+          const box = popover.getBoundingClientRect();
+          const below = anchor.bottom + gap;
+          const top = below + box.height <= viewportTop + viewportHeight - margin
+            ? below : anchor.top - box.height - gap;
+          popover.style.left = `${Math.max(viewportLeft + margin, Math.min(anchor.left - 16, viewportLeft + viewportWidth - box.width - margin))}px`;
+          popover.style.top = `${Math.max(viewportTop + margin, Math.min(top, viewportTop + viewportHeight - box.height - margin))}px`;
+        };
+        const schedulePosition = () => {
+          if (activeLink && !positionFrame) positionFrame = requestAnimationFrame(positionPopover);
+        };
+
+        // 번호와 설명 사이의 짧은 간격을 건널 시간을 주고, 두 영역 모두 벗어났을 때 닫습니다.
+        const cancelHide = () => clearTimeout(hideTimer);
+        const scheduleHide = () => {
+          cancelHide();
+          hideTimer = setTimeout(() => {
+            if (!activeLink || !popover.matches(':popover-open')) return;
+            const hovering = activeLink.matches(':hover') || popover.matches(':hover');
+            const keyboardFocus = activeLink.matches(':focus-visible')
+              || popover.matches(':focus-visible') || popover.querySelector(':focus-visible');
+            if (!hovering && !keyboardFocus) popover.hidePopover();
+          }, 140);
+        };
+
+        // Esc와 창 밖 클릭은 브라우저가 처리하고, 닫힌 뒤 접근성 상태와 키보드 초점을 복구합니다.
+        popover.addEventListener('beforetoggle', event => {
+          if (event.newState !== 'closed' || !activeLink) return;
+          cancelHide();
+          const previousLink = activeLink;
+          activeLink = null;
+          previousLink.setAttribute('aria-expanded', 'false');
+          if (popover.contains(document.activeElement)) {
+            restoringFocus = true;
+            previousLink.focus({ preventScroll: true });
+            restoringFocus = false;
+          }
+        });
+        closeButton.addEventListener('click', () => popover.hidePopover());
+        popover.addEventListener('pointerenter', cancelHide);
+        popover.addEventListener('pointerleave', event => {
+          if (event.pointerType !== 'touch') scheduleHide();
+        });
+        popover.addEventListener('focusin', cancelHide);
+        popover.addEventListener('focusout', scheduleHide);
+
+        // 마우스를 올릴 때는 초점을 빼앗지 않고, 키보드·터치로 열 때만 설명에 초점을 줍니다.
+        const showFootnote = (link, note, focus = false) => {
+          cancelHide();
+          if (activeLink !== link || !popover.matches(':popover-open')) {
+            if (popover.matches(':popover-open')) popover.hidePopover();
+            // 원본 각주는 그대로 두고, 복사본의 중복 ID와 본문 복귀 링크만 제거합니다.
+            const content = note.cloneNode(true);
+            content.querySelectorAll('.reversefootnote, [role="doc-backlink"]').forEach(node => node.remove());
+            content.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
+            body.replaceChildren(...content.childNodes);
+            title.textContent = `각주 ${link.textContent.trim()}`;
+            activeLink = link;
+            link.setAttribute('aria-expanded', 'true');
+            popover.showPopover({ source: link });
+            popover.scrollTop = 0;
+            positionPopover();
+          }
+          if (focus) popover.focus({ preventScroll: true });
+        };
+
+        footnotes.forEach(({ link, note }) => {
+          link.setAttribute('aria-haspopup', 'dialog');
+          link.setAttribute('aria-controls', popover.id);
+          link.setAttribute('aria-expanded', 'false');
+          link.setAttribute('aria-label', `각주 ${link.textContent.trim()} 보기`);
+          link.addEventListener('pointerenter', event => {
+            if (event.pointerType !== 'touch') showFootnote(link, note);
+          });
+          link.addEventListener('pointerleave', event => {
+            if (event.pointerType !== 'touch') scheduleHide();
+          });
+          link.addEventListener('focusin', () => {
+            if (!restoringFocus && link.matches(':focus-visible')) showFootnote(link, note);
+          });
+          link.addEventListener('focusout', scheduleHide);
+          // 터치 기기에서는 기존처럼 같은 번호를 다시 누르면 닫을 수 있습니다.
+          link.addEventListener('pointerdown', () => {
+            pressedOpenLink = activeLink === link ? link : null;
+          });
+          link.addEventListener('click', event => {
+            if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            const sameLink = activeLink === link || (event.detail > 0 && pressedOpenLink === link);
+            pressedOpenLink = null;
+            const touch = event.pointerType === 'touch';
+            if (touch && sameLink) {
+              if (popover.matches(':popover-open')) popover.hidePopover();
+              return;
+            }
+            showFootnote(link, note, touch || event.detail === 0);
+          });
+        });
+        window.addEventListener('scroll', schedulePosition, { passive: true });
+        window.addEventListener('resize', schedulePosition, { passive: true });
+        window.visualViewport?.addEventListener('resize', schedulePosition, { passive: true });
+        window.visualViewport?.addEventListener('scroll', schedulePosition, { passive: true });
+        popover.addEventListener('load', schedulePosition, true);
+
+        // 팝업 연결이 끝난 경우에만 하단 목록을 숨겨, 스크립트 미지원 시에는 원래 각주를 읽게 합니다.
+        const noteSections = new Set(footnotes.map(({ note }) => note.closest('.footnotes')));
+        noteSections.forEach(section => { section.hidden = true; });
+
+        // 각주 주소로 직접 접속하거나 새 탭에서 연 경우에도 해당 번호의 팝업을 표시합니다.
+        const openHashFootnote = () => {
+          let id;
+          try { id = decodeURIComponent(window.location.hash.slice(1)); } catch (_) { return; }
+          const footnote = footnotes.find(({ note }) => note.id === id);
+          if (!footnote) return;
+          footnote.link.scrollIntoView({ block: 'center', behavior: 'instant' });
+          footnote.link.click();
+        };
+        window.addEventListener('hashchange', openHashFootnote);
+        openHashFootnote();
+      }
+    }
+
     const headings = prose ? [...prose.querySelectorAll('h2, h3')] : [];
     const tocLinks = [];
 
