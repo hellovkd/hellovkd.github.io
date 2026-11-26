@@ -765,17 +765,22 @@ main.shell { padding-bottom: 108px; }
 .post-prose th, .post-prose td { padding: 10px 12px; text-align: left; border: 2px solid var(--border); }
 .post-prose th { background: var(--surface-strong); font-family: var(--font-display); font-weight: 700; }
 
-/* 각주 번호에 마우스를 올리면 설명을 표시하며, 터치 기기에서도 누르기 쉬운 영역을 유지합니다. */
+/* 각주 번호는 본문 리듬을 해치지 않는 픽셀 배지로 표시하고, 가리키거나 누르면 테마에 맞는 설명창을 엽니다. */
 .post-prose a.footnote {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  min-height: 28px;
-  padding: 2px 5px;
-  background: var(--surface);
-  color: var(--accent);
-  font-size: 12px;
+  min-width: 22px;
+  min-height: 22px;
+  margin-inline: 2px;
+  padding: 1px 4px;
+  background: var(--surface-strong);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
   line-height: 1;
   text-decoration: none;
 }
@@ -783,22 +788,25 @@ main.shell { padding-bottom: 108px; }
 .post-prose a.footnote[aria-expanded="true"] {
   background: var(--ink);
   color: var(--bg);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
 }
 
-/* 네이티브 팝오버의 최상위 레이어를 사용하므로 본문 애니메이션이나 컨테이너에 가려지지 않습니다. */
+/* 네이티브 팝오버를 사용해 본문에 가려지지 않게 하고, 제목과 설명을 구분해 읽기 쉽게 만듭니다. */
 .footnote-popover {
   position: fixed;
   inset: auto;
   margin: 0;
   width: min(360px, calc(100vw - 24px));
   max-height: calc(100vh - 24px);
-  padding: 18px;
+  padding: 20px;
   overflow: auto;
-  background: var(--surface);
+  background: var(--bg);
   color: var(--ink);
   border: 3px solid var(--ink);
-  box-shadow: 5px 5px 0 var(--ink);
-  font: 400 14px/1.8 var(--font);
+  border-top: 6px solid var(--accent);
+  box-shadow: 6px 6px 0 var(--ink);
+  font: 400 14px/1.75 var(--font);
   overflow-wrap: anywhere;
 }
 .footnote-popover:focus { outline: none; }
@@ -808,7 +816,9 @@ main.shell { padding-bottom: 108px; }
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
   font-weight: 700;
 }
 .footnote-popover-close {
@@ -817,14 +827,39 @@ main.shell { padding-bottom: 108px; }
   min-height: 36px;
   padding: 2px 8px;
   background: var(--bg);
-  border: 0;
+  border: 2px solid var(--ink);
+  font-size: 12px;
+  font-weight: 700;
 }
 .footnote-popover-close:hover { background: var(--ink); color: var(--bg); }
 .footnote-popover-body > * + * { margin-top: 12px; }
+.footnote-popover-body p { line-height: 1.75; }
 .footnote-popover-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .footnote-popover-body ul, .footnote-popover-body ol { padding-left: 20px; }
+.footnote-popover-body li + li { margin-top: 8px; }
 .footnote-popover-body img { max-width: 100%; height: auto; }
 .footnote-popover-body pre { overflow-x: auto; }
+
+/* 스크립트가 실행되지 않아도 각주 목록이 별도의 읽기 쉬운 영역으로 보이게 합니다. */
+.post-prose .footnotes:not([hidden]) {
+  margin-top: 48px;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-top: 4px solid var(--ink);
+}
+.post-prose .footnotes:not([hidden])::before {
+  content: "각주";
+  display: block;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.post-prose .footnotes:not([hidden]) ol { margin-top: 14px; }
+.post-prose .footnotes:not([hidden]) li + li { margin-top: 12px; }
+.post-prose .footnotes:not([hidden]) p { font-size: 14px; line-height: 1.75; }
+.post-prose .footnotes:not([hidden]) .reversefootnote { margin-left: 6px; text-decoration: none; }
 
 .post-foot, .article-pager { margin-top: 36px; }
 .post-back-link {
